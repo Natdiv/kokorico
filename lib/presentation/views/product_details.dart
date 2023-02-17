@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/core/colors.dart';
 import 'package:kokorico/core/const.dart';
 
-class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
+class ProductDetailsPage extends StatefulWidget {
+  const ProductDetailsPage({super.key});
 
   @override
-  State<ProductDetails> createState() => _ProductDetailsState();
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late TextEditingController _quantityController;
 
   int _quantity = 1;
@@ -38,7 +38,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               Navigator.pop(context);
             },
             color: AppColors.primaryColorDark,
-            icon: const Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back_ios)),
         actions: [
           IconButton(
               onPressed: () {},
