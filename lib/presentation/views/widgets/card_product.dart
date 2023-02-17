@@ -11,8 +11,10 @@ class CardProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ProductDetails()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ProductDetailsPage()));
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 24),
