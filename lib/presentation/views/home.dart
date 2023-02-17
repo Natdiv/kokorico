@@ -3,6 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/core/colors.dart';
 import 'package:kokorico/core/const.dart';
+import 'package:kokorico/presentation/views/cart.dart';
+import 'package:kokorico/presentation/views/delivery.dart';
+import 'package:kokorico/presentation/views/notifications.dart';
+import 'package:kokorico/presentation/views/profil.dart';
 import 'package:kokorico/presentation/views/widgets/card_product.dart';
 import 'package:kokorico/presentation/views/widgets/home_swiper.dart';
 
@@ -14,7 +18,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentTab = 0;
+  final List<Widget> _pages = const [
+    HomePage(),
+    CartPage(),
+    NotificationsPage(),
+    DeliveryPage(),
+    ProfilePage()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +100,18 @@ class _HomePageState extends State<HomePage> {
     return IconButton(
         onPressed: () {
           setState(() {
-            _currentTab = index;
+            //  _currentTab = index;
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => _pages[index],
+                ));
           });
         },
         icon: Icon(
           icon,
           size: 25,
-          color: _currentTab == index ? AppColors.secondaryColor : Colors.white,
+          color: index == 0 ? AppColors.secondaryColor : Colors.white,
         ));
     ;
   }
