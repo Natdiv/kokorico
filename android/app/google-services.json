@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "894893018049",
+    "project_id": "kokorico-goomy",
+    "storage_bucket": "kokorico-goomy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894893018049:android:971f7b13893f2d7d7cbd40",
+        "android_client_info": {
+          "package_name": "goomy.tech.kokorico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894893018049-9v8gdkbd0vjpmeei1c6npcpbeil1masm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhqt-sygggMe8DPfJ-1zKu7iGvc4TBJ_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894893018049-9v8gdkbd0vjpmeei1c6npcpbeil1masm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

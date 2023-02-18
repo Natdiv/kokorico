@@ -1,27 +1,49 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kokorico/core/theme.dart';
-import 'package:kokorico/presentation/views/confirm_adress.dart';
-import 'package:kokorico/presentation/views/dashboard.dart';
-import 'package:kokorico/presentation/views/home.dart';
-import 'package:kokorico/presentation/views/search.dart';
-import 'package:kokorico/presentation/views/signin.dart';
-import 'package:kokorico/presentation/views/signup.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'core/helpers/locator.dart';
+import 'core/helpers/routes.dart';
+import 'core/theme/theme.dart';
+import 'firebase_options.dart';
+import 'state/app.dart';
+import 'state/auth.dart';
+import 'state/cart.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  setupDependencies();
+  runApp(const KokoricoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class KokoricoApp extends StatelessWidget {
+  const KokoricoApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Kokorico',
-      theme: AppTheme.getTheme(),
-      home: const HomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AppState>(create: (_) => AppState()),
+        ChangeNotifierProvider<AuthState>(create: (_) => AuthState()),
+        ChangeNotifierProvider<CartState>(create: (_) => CartState())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Kokorico',
+        theme: AppTheme.getTheme().copyWith(
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
+        routes: Routes.route(),
+        onGenerateRoute: (settings) => Routes.onGenerateRoute(settings),
+        onUnknownRoute: (settings) => Routes.onUnknownRoute(settings),
+        initialRoute: "SplashPage",
+      ),
     );
   }
 }
