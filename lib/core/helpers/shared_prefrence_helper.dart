@@ -1,3 +1,4 @@
+import 'package:kokorico/core/helpers/enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceHelper {
@@ -16,6 +17,16 @@ class SharedPreferenceHelper {
 
   Future clearPreferenceValues() async {
     (await SharedPreferences.getInstance()).clear();
+  }
+
+  Future<void> setFirstTimeStatus(bool value) async {
+    (await SharedPreferences.getInstance())
+        .setBool(FisrtTime.FIRST_TIME.toString(), value);
+  }
+
+  Future<bool?> getFirstTimeStatus() async {
+    return (await SharedPreferences.getInstance())
+        .getBool(FisrtTime.FIRST_TIME.toString());
   }
 
   // Future<bool> saveUserProfile(UserModel user) async {

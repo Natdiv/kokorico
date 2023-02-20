@@ -5,9 +5,9 @@ import 'core/helpers/locator.dart';
 import 'core/helpers/routes.dart';
 import 'core/theme/theme.dart';
 import 'firebase_options.dart';
-import 'state/app.dart';
-import 'state/auth.dart';
-import 'state/cart.dart';
+import 'state/app_state.dart';
+import 'state/auth_state.dart';
+import 'state/cart_state.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
