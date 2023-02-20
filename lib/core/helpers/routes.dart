@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:kokorico/features/browsing/presentation/pages/auth/signin.dart';
+import 'package:kokorico/features/browsing/presentation/pages/auth/signup.dart';
+import 'package:kokorico/features/browsing/presentation/pages/users_ui/cart.dart';
+import 'package:kokorico/features/browsing/presentation/pages/users_ui/delivery.dart';
 import 'package:kokorico/features/browsing/presentation/pages/users_ui/home.dart';
+import 'package:kokorico/features/browsing/presentation/pages/users_ui/notifications.dart';
+import 'package:kokorico/features/browsing/presentation/pages/users_ui/profil.dart';
+import 'package:kokorico/features/browsing/presentation/pages/users_ui/must_be_connected.dart';
+import 'package:provider/provider.dart';
 import '../../features/browsing/presentation/pages/splash.dart';
+import '../../state/auth_state.dart';
+import 'enum.dart';
 
 class Routes {
   static dynamic route() {
@@ -16,6 +26,36 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const HomePage(),
         );
+      case '/cart':
+        return MaterialPageRoute(
+          builder: (context) => const CartPage(),
+        );
+      case '/notifications':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeLoggedIn(context))
+              ? const NotificationsPage()
+              : const MustBeConnectedPage(),
+        );
+      case '/delivery':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeLoggedIn(context))
+              ? const DeliveryPage()
+              : const MustBeConnectedPage(),
+        );
+      case '/profile':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeLoggedIn(context))
+              ? const ProfilePage()
+              : const MustBeConnectedPage(),
+        );
+      case '/signin':
+        return MaterialPageRoute(
+          builder: (context) => const SigninPage(),
+        );
+      case '/signup':
+        return MaterialPageRoute(
+          builder: (context) => const SignupPage(),
+        );
       default:
         return null;
     }
@@ -29,5 +69,10 @@ class Routes {
         ),
       ),
     );
+  }
+
+  static bool mustBeLoggedIn(BuildContext context) {
+    var state = Provider.of<AuthState>(context, listen: false);
+    return state.authStatus == AuthStatus.LOGGED_IN;
   }
 }

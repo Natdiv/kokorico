@@ -87,31 +87,26 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _bottomBarItem(Icons.home_filled, 0),
-            _bottomBarItem(Icons.shopping_cart, 1),
-            _bottomBarItem(Icons.notifications, 2),
-            _bottomBarItem(Icons.delivery_dining, 3),
-            _bottomBarItem(Icons.person, 4),
+            _bottomBarItem(Icons.home_filled, '/home'),
+            _bottomBarItem(Icons.shopping_cart, '/cart'),
+            _bottomBarItem(Icons.notifications, '/notifications'),
+            _bottomBarItem(Icons.delivery_dining, '/delivery'),
+            _bottomBarItem(Icons.person, '/profile'),
           ]),
     );
   }
 
-  Widget _bottomBarItem(IconData icon, index) {
+  Widget _bottomBarItem(IconData icon, String route) {
     return IconButton(
         onPressed: () {
           setState(() {
-            //  _currentTab = index;
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => _pages[index],
-                ));
+            Navigator.pushNamed(context, route);
           });
         },
         icon: Icon(
           icon,
           size: 25,
-          color: index == 0 ? AppColors.secondaryColor : Colors.white,
+          color: route == '/home' ? AppColors.secondaryColor : Colors.white,
         ));
     ;
   }
