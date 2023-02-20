@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kokorico/features/browsing/domain/entities/app_user.dart';
+import '../../domain/entities/app_user.dart';
 
 import '../../../../core/helpers/enum.dart';
 

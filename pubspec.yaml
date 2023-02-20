@@ -50,6 +50,8 @@ dependencies:
   shared_preferences: ^2.0.17
   provider: ^6.0.5
   firebase_analytics: ^10.1.3
+  pinput: ^2.2.21
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:

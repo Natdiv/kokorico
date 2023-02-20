@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kokorico/core/helpers/shared_prefrence_helper.dart';
-import 'package:kokorico/core/theme/colors.dart';
-import 'package:kokorico/features/browsing/presentation/pages/users_ui/welcome.dart';
-import 'package:kokorico/state/app_state.dart';
+import '../../../../core/helpers/shared_prefrence_helper.dart';
+import '../../../../core/theme/colors.dart';
+import 'users_ui/welcome.dart';
+import '../state/app_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/helpers/enum.dart';
 import '../../../../core/helpers/locator.dart';
-import '../../../../state/auth_state.dart';
+import '../state/auth_state.dart';
 import 'users_ui/home.dart';
 
 class SplashScreen extends StatefulWidget {

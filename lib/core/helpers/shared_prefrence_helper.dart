@@ -1,4 +1,4 @@
-import 'package:kokorico/core/helpers/enum.dart';
+import 'enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceHelper {

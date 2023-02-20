@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:kokorico/core/helpers/enum.dart';
+import '../../../../core/helpers/enum.dart';
 
 /// The User entity.
 class AppUser extends Equatable {

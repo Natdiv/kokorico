@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+
 import 'shared_prefrence_helper.dart';
 
 final getIt = GetIt.instance;

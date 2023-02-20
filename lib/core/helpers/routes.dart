@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:kokorico/features/browsing/presentation/pages/auth/signin.dart';
-import 'package:kokorico/features/browsing/presentation/pages/auth/signup.dart';
-import 'package:kokorico/features/browsing/presentation/pages/users_ui/cart.dart';
-import 'package:kokorico/features/browsing/presentation/pages/users_ui/delivery.dart';
-import 'package:kokorico/features/browsing/presentation/pages/users_ui/home.dart';
-import 'package:kokorico/features/browsing/presentation/pages/users_ui/notifications.dart';
-import 'package:kokorico/features/browsing/presentation/pages/users_ui/profil.dart';
-import 'package:kokorico/features/browsing/presentation/pages/users_ui/must_be_connected.dart';
+import '../../features/browsing/presentation/pages/auth/signin.dart';
+import '../../features/browsing/presentation/pages/auth/signup.dart';
+import '../../features/browsing/presentation/pages/auth/sms_code.dart';
+import '../../features/browsing/presentation/pages/users_ui/cart.dart';
+import '../../features/browsing/presentation/pages/users_ui/delivery.dart';
+import '../../features/browsing/presentation/pages/users_ui/home.dart';
+import '../../features/browsing/presentation/pages/users_ui/notifications.dart';
+import '../../features/browsing/presentation/pages/users_ui/profil.dart';
+import '../../features/browsing/presentation/pages/users_ui/must_be_connected.dart';
 import 'package:provider/provider.dart';
 import '../../features/browsing/presentation/pages/splash.dart';
-import '../../state/auth_state.dart';
+import '../../features/browsing/presentation/state/auth_state.dart';
 import 'enum.dart';
 
 class Routes {
@@ -56,6 +57,7 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const SignupPage(),
         );
+
       default:
         return null;
     }

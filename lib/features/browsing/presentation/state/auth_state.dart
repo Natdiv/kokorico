@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kokorico/core/helpers/locator.dart';
-import 'package:kokorico/core/helpers/utility.dart';
-import 'package:kokorico/features/browsing/data/data_layer/providers/firebase_provider.dart';
-import 'package:kokorico/features/browsing/data/models/app_user_model.dart';
+import '../../../../core/helpers/locator.dart';
+import '../../../../core/helpers/utility.dart';
+import '../../data/data_layer/providers/firebase_provider.dart';
+import '../../data/models/app_user_model.dart';
 
-import '../core/helpers/enum.dart';
-import '../core/helpers/shared_prefrence_helper.dart';
+import '../../../../core/helpers/enum.dart';
+import '../../../../core/helpers/shared_prefrence_helper.dart';
 
 import 'app_state.dart';
 

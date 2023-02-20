@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:kokorico/core/helpers/locator.dart';
 
-import '../core/helpers/shared_prefrence_helper.dart';
+import '../../../../core/helpers/locator.dart';
+import '../../../../core/helpers/shared_prefrence_helper.dart';
 
 class AppState extends ChangeNotifier {
   bool _isBusy = false;

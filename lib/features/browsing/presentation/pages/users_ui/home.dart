@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../core/helpers/routes.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
 import 'cart.dart';
@@ -99,9 +100,7 @@ class _HomePageState extends State<HomePage> {
   Widget _bottomBarItem(IconData icon, String route) {
     return IconButton(
         onPressed: () {
-          setState(() {
-            Navigator.pushNamed(context, route);
-          });
+          Routes.goTo(context, route);
         },
         icon: Icon(
           icon,
