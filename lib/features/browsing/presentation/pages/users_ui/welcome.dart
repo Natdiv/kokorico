@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/core/const.dart';
+import 'package:kokorico/core/helpers/routes.dart';
 
 import '../../../../../core/theme/colors.dart';
 
@@ -18,22 +20,33 @@ class WelcomePage extends StatelessWidget {
         child: Column(
           children: [
             const Spacer(),
+            SizedBox(
+                child: SvgPicture.asset(
+              'assets/images/welcome.svg',
+              fit: BoxFit.fitHeight,
+              height: size(context).height * 0.30,
+            )),
+            verticalSpacer(height: 36),
             Text("Bienvenue dans notre magasin",
                 style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w500))),
-            verticalSpacer(height: 40),
+            verticalSpacer(height: 36),
             _buildButton(
                 text: 'Se connecter',
                 textColor: Colors.white,
                 backgroundColor: AppColors.primaryColor,
-                onTap: () {}),
+                onTap: () {
+                  Routes.goTo(context, '/signin');
+                }),
             verticalSpacer(height: 16),
             _buildButton(
                 text: 'Créer un compte',
                 textColor: AppColors.primaryColor,
                 backgroundColor: Colors.white,
-                onTap: () {}),
+                onTap: () {
+                  Routes.goTo(context, '/signup');
+                }),
             const Spacer(),
           ],
         ),

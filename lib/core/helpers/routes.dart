@@ -75,4 +75,8 @@ class Routes {
     var state = Provider.of<AuthState>(context, listen: false);
     return state.authStatus == AuthStatus.LOGGED_IN;
   }
+
+  static void goTo(BuildContext context, String routeName) {
+    Navigator.pushNamed(context, routeName);
+  }
 }
