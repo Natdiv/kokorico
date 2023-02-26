@@ -14,6 +14,7 @@ class AppState extends ChangeNotifier {
   }
 
   late bool? isFirstTime;
+  late bool isModeAdmin;
 
   firstTime() async {
     isFirstTime = await getIt<SharedPreferenceHelper>().getFirstTimeStatus();
@@ -30,6 +31,20 @@ class AppState extends ChangeNotifier {
       isFirstTime = false;
     }
 
+    notifyListeners();
+  }
+
+  admiMode() async {
+    isModeAdmin = await getIt<SharedPreferenceHelper>().getModeAdminStatus();
+    if (isModeAdmin) {
+      if (kDebugMode) {
+        print("ADMIN MODE");
+      }
+    } else {
+      if (kDebugMode) {
+        print("USER MODE");
+      }
+    }
     notifyListeners();
   }
 }

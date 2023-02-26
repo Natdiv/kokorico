@@ -24,14 +24,16 @@ class SharedPreferenceHelper {
         .setBool(FisrtTime.FIRST_TIME.toString(), value);
   }
 
-  Future<bool?> getFirstTimeStatus() async {
+  Future<bool> getFirstTimeStatus() async {
     return (await SharedPreferences.getInstance())
-        .getBool(FisrtTime.FIRST_TIME.toString());
+            .getBool(FisrtTime.FIRST_TIME.toString()) ??
+        false;
   }
 
-  Future<bool?> getModeAdminStatus() async {
+  Future<bool> getModeAdminStatus() async {
     return (await SharedPreferences.getInstance())
-        .getBool(ModeAdmin.MODE_ADMIN.toString());
+            .getBool(ModeAdmin.MODE_ADMIN.toString()) ??
+        false;
   }
 
   Future<void> setModeAdminStatus(bool value) async {
