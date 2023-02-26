@@ -30,6 +30,6 @@ class AppState extends ChangeNotifier {
       isFirstTime = false;
     }
 
-    // notifyListeners();
+    notifyListeners();
   }
 }

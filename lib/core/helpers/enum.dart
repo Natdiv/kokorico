@@ -4,12 +4,6 @@ enum AuthStatus {
   LOGGED_IN,
 }
 
-enum UserRole {
-  SUPER,
-  ADMIN,
-  USER,
-}
-
 enum AppMode {
   MODE_ADMIN,
   MODE_USER,
@@ -17,4 +11,8 @@ enum AppMode {
 
 enum FisrtTime {
   FIRST_TIME,
+}
+
+enum ModeAdmin {
+  MODE_ADMIN,
 }

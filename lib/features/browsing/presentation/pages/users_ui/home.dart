@@ -8,8 +8,8 @@ import 'cart.dart';
 import 'delivery.dart';
 import 'notifications.dart';
 import 'profil.dart';
-import '../widgets/card_product.dart';
-import '../widgets/home_swiper.dart';
+import '../common/widgets/card_product.dart';
+import '../common/widgets/home_swiper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

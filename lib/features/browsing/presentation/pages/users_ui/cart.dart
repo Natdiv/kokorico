@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/const.dart';
 import '../../../../../core/theme/colors.dart';
-import '../widgets/card_cart_product.dart';
+import '../common/widgets/card_cart_product.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});

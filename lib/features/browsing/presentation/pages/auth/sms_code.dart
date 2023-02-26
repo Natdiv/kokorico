@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/features/browsing/presentation/pages/common/loading_page.dart';
+// import 'package:kokorico/features/browsing/presentation/pages/widgets/loading_page.dart';
+import 'package:provider/provider.dart';
 import '../../../../../core/theme/colors.dart';
 import 'package:pinput/pinput.dart';
 
-class SmsCodePage extends StatelessWidget {
-  SmsCodePage({super.key, required this.verificationId});
+import '../../state/auth_state.dart';
 
-  final String verificationId;
+class SmsCodePage extends StatelessWidget {
+  SmsCodePage({super.key});
 
   final pinController = TextEditingController();
   final focusNode = FocusNode();
@@ -14,6 +17,11 @@ class SmsCodePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AuthState>(context, listen: false);
+    return state.isbusy ? const LoadingScreen() : _smsCodeScreen(context);
+  }
+
+  Widget _smsCodeScreen(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -82,6 +90,7 @@ class SmsCodePage extends StatelessWidget {
   }
 
   Widget _buidPinputWidget(BuildContext context) {
+    final state = Provider.of<AuthState>(context, listen: false);
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 50,
@@ -117,11 +126,14 @@ class SmsCodePage extends StatelessWidget {
             width: 1,
             color: Colors.white,
           ),
-          onCompleted: (value) {},
+          onCompleted: (String value) {
+            // signInWithPhoneNumber(context, value);
+            Navigator.pop<String>(context, value);
+          },
           defaultPinTheme: defaultPinTheme,
           focusedPinTheme: focusedPinTheme,
           showCursor: true,
-          androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+          androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
           animationCurve: Curves.easeInOut,
           pinAnimationType: PinAnimationType.rotation,
           hapticFeedbackType: HapticFeedbackType.vibrate,
@@ -129,4 +141,11 @@ class SmsCodePage extends StatelessWidget {
       ),
     );
   }
+
+  // signInWithPhoneNumber(BuildContext context, String smsCode) async {
+  //   final state = Provider.of<AuthState>(context, listen: false);
+  //   var verificationId = state.verificationId;
+
+  //   state.signinWithPhone(verificationId, smsCode);
+  // }
 }

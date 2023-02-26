@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../core/const.dart';
 import '../../../../../core/theme/colors.dart';
+import '../../state/auth_state.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,6 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AuthState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -43,15 +46,19 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 verticalSpacer(height: 16),
-                _buildCardInfo(title: 'Nom Complet', value: 'Christian Mwamba'),
-                _buildCardInfo(title: 'Numero', value: '+243 999 999 999'),
                 _buildCardInfo(
-                    title: 'Email', value: 'christianmwamba@gmail.com'),
+                    title: 'Nom Complet',
+                    value:
+                        '${state.appUser!.firstName} ${state.appUser!.name}'),
+                _buildCardInfo(
+                    title: 'Numero', value: state.appUser!.phoneNumber),
+                _buildCardInfo(title: 'Email', value: state.appUser!.email),
                 _buildCardInfo(
                     title: 'Adresse de livraison',
-                    value: '09, Avenue de la paix, Jolie Site, Kolwezi'),
+                    value: state.appUser!.address),
                 _buildCardInfo(
-                    title: 'Référence', value: 'En face de l\'hopital'),
+                    title: 'Référence',
+                    value: state.appUser!.referenceAddress ?? 'Non renseigné'),
                 verticalSpacer(height: 8),
                 _buildProfileActionButton(
                     title: 'Modifier mon compte',
@@ -67,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Container _buildProfileActionButton(
+  Widget _buildProfileActionButton(
       {required String title, required Color color}) {
     return Container(
       height: 42,

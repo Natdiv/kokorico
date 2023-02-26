@@ -2,8 +2,8 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../core/const.dart';
-import '../../../../../core/theme/colors.dart';
+import '../../../../../../core/const.dart';
+import '../../../../../../core/theme/colors.dart';
 
 class HomeSwiper extends StatelessWidget {
   const HomeSwiper({super.key});

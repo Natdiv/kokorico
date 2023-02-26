@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/const.dart';
 import '../../../../../core/helpers/routes.dart';
-import '../widgets/custom_button.dart';
+import 'widgets/custom_button.dart';
 
 import '../../../../../core/theme/colors.dart';
 

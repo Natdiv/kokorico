@@ -16,7 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  setupDependencies();
+  await setupDependencies();
   runApp(const KokoricoApp());
 }
 
@@ -43,7 +43,7 @@ class KokoricoApp extends StatelessWidget {
         routes: Routes.route(),
         onGenerateRoute: (settings) => Routes.onGenerateRoute(settings),
         onUnknownRoute: (settings) => Routes.onUnknownRoute(settings),
-        initialRoute: "SplashPage",
+        initialRoute: "/",
       ),
     );
   }

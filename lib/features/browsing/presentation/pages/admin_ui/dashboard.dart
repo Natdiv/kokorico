@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
-import '../widgets/drawer.dart';
+import '../common/widgets/drawer.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

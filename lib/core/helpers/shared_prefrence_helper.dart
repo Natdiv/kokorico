@@ -29,6 +29,16 @@ class SharedPreferenceHelper {
         .getBool(FisrtTime.FIRST_TIME.toString());
   }
 
+  Future<bool?> getModeAdminStatus() async {
+    return (await SharedPreferences.getInstance())
+        .getBool(ModeAdmin.MODE_ADMIN.toString());
+  }
+
+  Future<void> setModeAdminStatus(bool value) async {
+    (await SharedPreferences.getInstance())
+        .setBool(ModeAdmin.MODE_ADMIN.toString(), value);
+  }
+
   // Future<bool> saveUserProfile(UserModel user) async {
   //   return (await SharedPreferences.getInstance()).setString(
   //       UserPreferenceKey.UserProfile.toString(), json.encode(user.toJson()));

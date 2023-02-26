@@ -4,13 +4,13 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/product.dart';
 import '../repositories/product_repository.dart';
 
-class GetAllProducts implements UseCase<List<Product>, String> {
+class GetAllProducts implements UseCase<List<Product>, NoParams> {
   GetAllProducts(this._productRepository);
 
-  ProductRepository _productRepository;
+  final ProductRepository _productRepository;
 
   @override
-  Future<Either<Failure, List<Product>>> call(String id) async {
-    return await _productRepository.getProducts();
+  Future<Either<Failure, List<Product>>> call(NoParams params) async {
+    return await _productRepository.read();
   }
 }

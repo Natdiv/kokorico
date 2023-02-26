@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../core/const.dart';
-import '../../../../../core/theme/colors.dart';
-import '../users_ui/product_details.dart';
+import '../../../../../../core/const.dart';
+import '../../../../../../core/theme/colors.dart';
+import '../../users_ui/product_details.dart';
 
 class CardProduct extends StatelessWidget {
   const CardProduct({super.key});

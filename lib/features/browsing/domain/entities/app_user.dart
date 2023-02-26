@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
-import '../../../../core/helpers/enum.dart';
+import 'package:kokorico/features/browsing/domain/entities/product.dart';
+
+import '../../../../core/helpers/utility.dart';
 
 /// The User entity.
 class AppUser extends Equatable {
@@ -11,12 +13,12 @@ class AppUser extends Equatable {
   final String phoneNumber;
   final String? imageUrl;
   final String? bio;
-  final String? address;
+  final String address;
   final String? referenceAddress;
-  final UserRole role;
+  final String role;
   final bool isVerified;
-  final List<String> favorites;
-  final List<String> cart;
+  final List<Product> favorites;
+  final List<Product> cart;
 
   const AppUser({
     required this.uid,
@@ -26,7 +28,7 @@ class AppUser extends Equatable {
     required this.phoneNumber,
     this.imageUrl,
     this.bio,
-    this.address,
+    required this.address,
     this.referenceAddress,
     this.role = UserRole.USER,
     this.isVerified = false,

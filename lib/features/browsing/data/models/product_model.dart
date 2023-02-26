@@ -1,7 +1,9 @@
+import 'dart:ffi';
+
 import '../../domain/entities/product.dart';
 
 class ProductModel extends Product {
-  ProductModel({
+  const ProductModel({
     required String id,
     required String name,
     required String description,
@@ -30,8 +32,8 @@ class ProductModel extends Product {
       description: json['description'],
       imageUrl: json['imageUrl'],
       price: json['price'],
-      rating: json['rating'],
-      reviews: json['reviews'],
+      rating: double.parse(json['rating']),
+      reviews: int.parse(json['reviews']),
       isFavorite: json['isFavorite'],
       isPopular: json['isPopular'],
     );

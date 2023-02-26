@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/const.dart';
 import '../../../../../core/helpers/routes.dart';
 import '../../../../../core/theme/colors.dart';
-import '../widgets/custom_button.dart';
+import 'widgets/custom_button.dart';
 
 class MustBeConnectedPage extends StatelessWidget {
   const MustBeConnectedPage({super.key});

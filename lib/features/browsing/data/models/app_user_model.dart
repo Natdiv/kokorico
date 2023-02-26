@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kokorico/features/browsing/data/models/product_model.dart';
+import 'package:kokorico/features/browsing/domain/entities/product.dart';
+import '../../../../core/helpers/utility.dart';
 import '../../domain/entities/app_user.dart';
-
-import '../../../../core/helpers/enum.dart';
 
 class AppUserModel extends AppUser {
   const AppUserModel({
@@ -12,12 +13,12 @@ class AppUserModel extends AppUser {
     required String phoneNumber,
     String? imageUrl,
     String? bio,
-    String? address,
+    required String address,
     String? referenceAddress,
-    UserRole role = UserRole.USER,
+    String role = UserRole.USER,
     bool isVerified = false,
-    List<String> favorites = const [],
-    List<String> cart = const [],
+    List<Product> favorites = const [],
+    List<Product> cart = const [],
   }) : super(
             uid: uid,
             name: name,
@@ -38,25 +39,32 @@ class AppUserModel extends AppUser {
     SnapshotOptions? options,
   ) {
     final documentSnapshot = snapshot.data();
+
+    print("FROM FIRESTORE: ${documentSnapshot}");
     return AppUserModel(
       uid: snapshot.id,
-      name: documentSnapshot?['name'],
-      firstName: documentSnapshot?['firstName'],
-      email: documentSnapshot?['email'],
-      phoneNumber: documentSnapshot?['phoneNumber'],
-      imageUrl: documentSnapshot?['imageUrl'],
-      bio: documentSnapshot?['bio'],
-      address: documentSnapshot?['address'],
-      referenceAddress: documentSnapshot?['referenceAddress'],
-      role: UserRole.values[documentSnapshot?['role']],
-      isVerified: documentSnapshot?['isVerified'],
-      favorites: List<String>.from(documentSnapshot?['favorites']),
-      cart: List<String>.from(documentSnapshot?['cart']),
+      name: documentSnapshot?['name'] ?? '',
+      firstName: documentSnapshot?['firstName'] ?? '',
+      email: documentSnapshot?['email'] ?? '',
+      phoneNumber: documentSnapshot?['phoneNumber'] ?? '',
+      imageUrl: documentSnapshot?['imageUrl'] ?? '',
+      bio: documentSnapshot?['bio'] ?? '',
+      address: documentSnapshot?['address'] ?? '',
+      referenceAddress: documentSnapshot?['referenceAddress'] ?? '',
+      role: documentSnapshot?['role'] ?? UserRole.USER,
+      isVerified: documentSnapshot?['isVerified'] ?? false,
+      favorites: (documentSnapshot?['favorites'] as Iterable)
+          .map((e) => ProductModel.fromJson(e))
+          .toList(),
+      cart: (documentSnapshot?['cart'] as Iterable)
+          .map((e) => ProductModel.fromJson(e))
+          .toList(),
     );
   }
 
   Map<String, dynamic> toFirestore() {
-    return {
+    var data = {
+      "uid": uid,
       "name": name,
       "firstName": firstName,
       "email": email,
@@ -70,5 +78,8 @@ class AppUserModel extends AppUser {
       "favorites": favorites,
       "cart": cart,
     };
+
+    print("TO FIRESTORE: ${data}");
+    return data;
   }
 }

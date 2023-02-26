@@ -31,3 +31,9 @@ class Utility {
         : print("[EVENT]: $event");
   }
 }
+
+class UserRole {
+  static const String SUPER = 'SUPER';
+  static const String ADMIN = 'ADMIN';
+  static const String USER = 'USER';
+}

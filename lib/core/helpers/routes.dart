@@ -7,16 +7,16 @@ import '../../features/browsing/presentation/pages/users_ui/delivery.dart';
 import '../../features/browsing/presentation/pages/users_ui/home.dart';
 import '../../features/browsing/presentation/pages/users_ui/notifications.dart';
 import '../../features/browsing/presentation/pages/users_ui/profil.dart';
-import '../../features/browsing/presentation/pages/users_ui/must_be_connected.dart';
+import '../../features/browsing/presentation/pages/common/must_be_connected.dart';
 import 'package:provider/provider.dart';
-import '../../features/browsing/presentation/pages/splash.dart';
+import '../../features/browsing/presentation/pages/common/splash.dart';
 import '../../features/browsing/presentation/state/auth_state.dart';
 import 'enum.dart';
 
 class Routes {
   static dynamic route() {
     return {
-      'SplashPage': (BuildContext context) => const SplashScreen(),
+      '/': (BuildContext context) => const SplashScreen(),
     };
   }
 
@@ -80,5 +80,9 @@ class Routes {
 
   static void goTo(BuildContext context, String routeName) {
     Navigator.pushNamed(context, routeName);
+  }
+
+  static void pushReplacement(BuildContext context, String routeName) {
+    Navigator.pushReplacementNamed(context, routeName);
   }
 }
