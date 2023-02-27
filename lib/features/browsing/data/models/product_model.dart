@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import '../../domain/entities/product.dart';
 
 class ProductModel extends Product {
@@ -9,6 +7,7 @@ class ProductModel extends Product {
     required String description,
     required String imageUrl,
     required double price,
+    required String unit,
     required double rating,
     required int reviews,
     required bool isFavorite,
@@ -19,6 +18,7 @@ class ProductModel extends Product {
           description: description,
           imageUrl: imageUrl,
           price: price,
+          unit: unit,
           rating: rating,
           reviews: reviews,
           isFavorite: isFavorite,
@@ -32,6 +32,7 @@ class ProductModel extends Product {
       description: json['description'],
       imageUrl: json['imageUrl'],
       price: json['price'],
+      unit: json['unit'],
       rating: double.parse(json['rating']),
       reviews: int.parse(json['reviews']),
       isFavorite: json['isFavorite'],
@@ -46,6 +47,7 @@ class ProductModel extends Product {
       'description': description,
       'imageUrl': imageUrl,
       'price': price,
+      'unit': unit,
       'rating': rating,
       'reviews': reviews,
       'isFavorite': isFavorite,

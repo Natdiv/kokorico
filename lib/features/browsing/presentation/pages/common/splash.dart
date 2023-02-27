@@ -1,14 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../../../core/helpers/shared_prefrence_helper.dart';
 import '../../../../../core/theme/colors.dart';
 import 'welcome.dart';
-import '../../state/app_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/helpers/enum.dart';
-import '../../../../../core/helpers/locator.dart';
 import '../../state/auth_state.dart';
 import '../users_ui/home.dart';
 
@@ -37,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 1)).then((_) {
       var state = Provider.of<AuthState>(context, listen: false);
       state.firstTime();
+      state.admiMode();
       state.getCurrentUser();
     });
     //}

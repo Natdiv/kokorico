@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../core/const.dart';
+import '../../../../../../core/helpers/routes.dart';
 import '../../../../../../core/theme/colors.dart';
-import '../../users_ui/product_details.dart';
+import '../../../../data/models/product_model.dart';
 
 class CardProduct extends StatelessWidget {
-  const CardProduct({super.key});
+  final ProductModel product;
+
+  const CardProduct({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ProductDetailsPage()));
+        // Routes.goTo(context, routeName);
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 24),
@@ -47,14 +47,14 @@ class CardProduct extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Le coq',
+                          Text(product.name,
                               style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500))),
                           SizedBox(
                             width: size(context).width - 200,
-                            child: Text('Lorem' * 15,
+                            child: Text(product.description,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.poppins(
@@ -72,13 +72,13 @@ class CardProduct extends StatelessWidget {
                                           fontWeight: FontWeight.w400)),
                                   children: [
                                 TextSpan(
-                                    text: '10, 000 FC ',
+                                    text: '${product.price} FC',
                                     style: GoogleFonts.poppins(
                                         textStyle: const TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold))),
                                 TextSpan(
-                                    text: ' /par Kg',
+                                    text: ' /par ${product.unit}',
                                     style: GoogleFonts.poppins(
                                         textStyle: const TextStyle(
                                             fontSize: 12,

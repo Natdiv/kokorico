@@ -90,9 +90,9 @@ class AuthState extends AppState {
         }, (user_) {
           print('GET USER PROFILE SUCCESS');
           _appUser = user_ as AppUserModel?;
+          authStatus = AuthStatus.LOGGED_IN;
+          userId = user!.uid;
         });
-        authStatus = AuthStatus.LOGGED_IN;
-        userId = user!.uid;
       } else {
         authStatus = AuthStatus.NOT_LOGGED_IN;
       }

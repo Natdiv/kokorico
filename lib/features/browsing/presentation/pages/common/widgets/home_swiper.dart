@@ -1,12 +1,15 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/features/browsing/data/models/product_model.dart';
 
 import '../../../../../../core/const.dart';
 import '../../../../../../core/theme/colors.dart';
 
 class HomeSwiper extends StatelessWidget {
-  const HomeSwiper({super.key});
+  final List<ProductModel> data;
+
+  const HomeSwiper({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class HomeSwiper extends StatelessWidget {
           layout: SwiperLayout.TINDER,
           autoplay: true,
           autoplayDelay: 4000,
-          itemCount: 5,
+          itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -53,7 +56,7 @@ class HomeSwiper extends StatelessWidget {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               verticalSpacer(),
-                              Text('Poulet sur patte',
+                              Text(data[index].name,
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
                                         fontSize: 16,

@@ -6,6 +6,7 @@ import '../../features/browsing/presentation/pages/users_ui/cart.dart';
 import '../../features/browsing/presentation/pages/users_ui/delivery.dart';
 import '../../features/browsing/presentation/pages/users_ui/home.dart';
 import '../../features/browsing/presentation/pages/users_ui/notifications.dart';
+import '../../features/browsing/presentation/pages/users_ui/product_details.dart';
 import '../../features/browsing/presentation/pages/users_ui/profil.dart';
 import '../../features/browsing/presentation/pages/common/must_be_connected.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,10 @@ class Routes {
       case '/home':
         return MaterialPageRoute(
           builder: (context) => const HomePage(),
+        );
+      case '/product':
+        return MaterialPageRoute(
+          builder: (context) => const ProductDetailsPage(),
         );
       case '/cart':
         return MaterialPageRoute(

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import '../../../../../core/helpers/routes.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
-import 'cart.dart';
-import 'delivery.dart';
-import 'notifications.dart';
-import 'profil.dart';
+import '../../controllers/data_controller.dart';
 import '../common/widgets/card_product.dart';
 import '../common/widgets/home_swiper.dart';
 
@@ -19,13 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Widget> _pages = const [
-    HomePage(),
-    CartPage(),
-    NotificationsPage(),
-    DeliveryPage(),
-    ProfilePage()
-  ];
+  DataController _dataController = DataController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,35 +41,60 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                verticalSpacer(height: 12),
-                _buidWelcomeText(),
-                verticalSpacer(height: 0),
-                const HomeSwiper(),
-                verticalSpacer(),
-                Text('Notre catalogue',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold))),
-                verticalSpacer(height: 8),
-                ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: 8,
-                    itemBuilder: (context, index) {
-                      return const CardProduct();
-                    }),
-              ],
-            ),
-          ),
-        ),
+        body: FutureBuilder(
+            future: _dataController.getProducts(),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Container();
+                } else if (snapshot.data == null) {
+                  return Container();
+                } else /* if (snapshot.hasData) */ {
+                  final result = snapshot.data;
+                  result!.fold((failure) {
+                    return Container();
+                  }, (data) {
+                    return _mainBody(data as List<ProductModel>);
+                  });
+                }
+              }
+
+              return Container();
+            }),
         bottomNavigationBar: _buildBottomNavBar());
+  }
+
+  SingleChildScrollView _mainBody(List<ProductModel> data) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            verticalSpacer(height: 12),
+            _buidWelcomeText(),
+            verticalSpacer(height: 0),
+            HomeSwiper(
+              data: data,
+            ),
+            verticalSpacer(),
+            Text('Notre catalogue',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold))),
+            verticalSpacer(height: 8),
+            ListView.builder(
+                primary: false,
+                shrinkWrap: true,
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return CardProduct(product: data[index]);
+                }),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildBottomNavBar() {
@@ -107,7 +124,6 @@ class _HomePageState extends State<HomePage> {
           size: 25,
           color: route == '/home' ? AppColors.secondaryColor : Colors.white,
         ));
-    ;
   }
 
   Widget _buidWelcomeText() {
