@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../features/browsing/presentation/pages/admin_ui/all-orders.dart';
+import '../../features/browsing/presentation/pages/admin_ui/dashboard.dart';
+import '../../features/browsing/presentation/pages/admin_ui/new_product.dart';
+import '../../features/browsing/presentation/pages/admin_ui/payments-received.dart';
+import '../../features/browsing/presentation/pages/admin_ui/product_list.dart';
 import '../../features/browsing/presentation/pages/auth/signin.dart';
 import '../../features/browsing/presentation/pages/auth/signup.dart';
+import '../../features/browsing/presentation/pages/common/access_denied_page.dart';
 import '../../features/browsing/presentation/pages/users_ui/cart.dart';
 import '../../features/browsing/presentation/pages/users_ui/delivery.dart';
 import '../../features/browsing/presentation/pages/users_ui/home.dart';
@@ -12,6 +18,7 @@ import 'package:provider/provider.dart';
 import '../../features/browsing/presentation/pages/common/splash.dart';
 import '../../features/browsing/presentation/state/auth_state.dart';
 import 'enum.dart';
+import 'utility.dart';
 
 class Routes {
   static dynamic route() {
@@ -23,6 +30,40 @@ class Routes {
   static Route? onGenerateRoute(RouteSettings settings) {
     final pathName = settings.name;
     switch (pathName) {
+      // Setup admin routes
+      case '/dashboard':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeAdminUser(context))
+              ? const DashboardPage()
+              : const AccessDeniedPage(),
+        );
+
+      case '/new-product':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeAdminUser(context))
+              ? const NewProductPage()
+              : const AccessDeniedPage(),
+        );
+      case '/all-products':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeAdminUser(context))
+              ? const ProductListPage()
+              : const AccessDeniedPage(),
+        );
+      case '/all-orders':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeAdminUser(context))
+              ? const AllOrdersPage()
+              : const AccessDeniedPage(),
+        );
+      case '/payments-received':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeAdminUser(context))
+              ? const PaymentReceivedPage()
+              : const AccessDeniedPage(),
+        );
+
+      // Setup user routes
       case '/home':
         return MaterialPageRoute(
           builder: (context) => const HomePage(),
@@ -80,6 +121,12 @@ class Routes {
   static bool mustBeLoggedIn(BuildContext context) {
     var state = Provider.of<AuthState>(context);
     return state.authStatus == AuthStatus.LOGGED_IN;
+  }
+
+  static bool mustBeAdminUser(BuildContext context) {
+    var state = Provider.of<AuthState>(context);
+    return (state.authStatus == AuthStatus.LOGGED_IN &&
+        state.appUser!.role == UserRole.ADMIN);
   }
 
   static void goTo(BuildContext context, String routeName) {
