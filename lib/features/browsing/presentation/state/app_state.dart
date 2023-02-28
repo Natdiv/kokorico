@@ -13,12 +13,12 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  late bool? isFirstTime;
+  late bool isFirstTime;
   late bool isModeAdmin;
 
   firstTime() async {
     isFirstTime = await getIt<SharedPreferenceHelper>().getFirstTimeStatus();
-    if (isFirstTime == null) {
+    if (isFirstTime) {
       if (kDebugMode) {
         print("IS THE FIRST TIME");
       }

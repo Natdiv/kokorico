@@ -232,7 +232,6 @@ class _SigninPageState extends State<SigninPage> {
       });
     } else {
       await state.verifyPhoneNumber(context, '+243$value', pop: _pop);
-      _pop();
     }
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../../core/theme/colors.dart';
+import '../admin_ui/dashboard.dart';
+import 'must_be_connected.dart';
 import 'welcome.dart';
 import 'package:provider/provider.dart';
 
@@ -42,15 +44,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     var state = Provider.of<AuthState>(context);
+
     if (state.authStatus == AuthStatus.NOT_DETERMINED) {
       return _body();
-    }
-    if (state.authStatus == AuthStatus.NOT_LOGGED_IN) {
-      if (state.isFirstTime!) {
-        return const WelcomePage();
-      } else {
-        return const HomePage();
-      }
+    } else if (state.isFirstTime) {
+      return const WelcomePage();
+    } else if (state.authStatus == AuthStatus.NOT_LOGGED_IN &&
+        state.isModeAdmin) {
+      return const MustBeConnectedPage();
+    } else if (state.authStatus == AuthStatus.LOGGED_IN && state.isModeAdmin) {
+      return const DashboardPage();
     } else {
       return const HomePage();
     }

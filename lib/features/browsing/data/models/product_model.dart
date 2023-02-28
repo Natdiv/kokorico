@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../domain/entities/product.dart';
 
 class ProductModel extends Product {
@@ -41,6 +43,42 @@ class ProductModel extends Product {
   }
 
   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'imageUrl': imageUrl,
+      'price': price,
+      'unit': unit,
+      'rating': rating,
+      'reviews': reviews,
+      'isFavorite': isFavorite,
+      'isPopular': isPopular,
+    };
+  }
+
+  factory ProductModel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final documentSnapshot = snapshot.data();
+
+    print("PRODUCT FROM FIRESTORE: ${documentSnapshot}");
+    return ProductModel(
+      id: snapshot.id,
+      name: documentSnapshot?['name'] ?? '',
+      description: documentSnapshot?['description'] ?? '',
+      imageUrl: documentSnapshot?['imageUrl'] ?? '',
+      price: double.parse(documentSnapshot?['price'] ?? '0'),
+      unit: documentSnapshot?['unit'] ?? '',
+      rating: double.parse(documentSnapshot?['rating'] ?? '0'),
+      reviews: int.parse(documentSnapshot?['reviews'] ?? '0'),
+      isFavorite: documentSnapshot?['isFavorite'] ?? false,
+      isPopular: documentSnapshot?['isPopular'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
     return {
       'id': id,
       'name': name,

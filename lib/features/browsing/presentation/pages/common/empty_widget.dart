@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/const.dart';
+import '../../../../../core/theme/colors.dart';
+import 'widgets/custom_button.dart';
 
 class EmptyWidget extends StatelessWidget {
   final String imageSrc;
@@ -29,15 +31,17 @@ class EmptyWidget extends StatelessWidget {
             Text(message,
                 style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w500))),
+                        color: AppColors.primaryColorDark,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500))),
             const Spacer(),
             verticalSpacer(height: 16),
             // CustomButton(
-            //     text: 'Créer un compte',
-            //     textColor: AppColors.primaryColor,
-            //     backgroundColor: Colors.white,
+            //     text: 'Actualiser',
+            //     textColor: Colors.white,
+            //     backgroundColor: AppColors.primaryColor,
             //     onTap: () {
-            //       Routes.goTo(context, '/signup');
+            //      //  Navigator.
             //     }),
             const Spacer(),
           ],

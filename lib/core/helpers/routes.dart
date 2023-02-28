@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../features/browsing/presentation/pages/auth/signin.dart';
 import '../../features/browsing/presentation/pages/auth/signup.dart';
-import '../../features/browsing/presentation/pages/auth/sms_code.dart';
 import '../../features/browsing/presentation/pages/users_ui/cart.dart';
 import '../../features/browsing/presentation/pages/users_ui/delivery.dart';
 import '../../features/browsing/presentation/pages/users_ui/home.dart';
@@ -79,7 +78,7 @@ class Routes {
   }
 
   static bool mustBeLoggedIn(BuildContext context) {
-    var state = Provider.of<AuthState>(context, listen: false);
+    var state = Provider.of<AuthState>(context);
     return state.authStatus == AuthStatus.LOGGED_IN;
   }
 

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
+import '../../../../../core/error/failures.dart';
 import '../../../../../core/helpers/routes.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
 import '../../controllers/data_controller.dart';
+import '../common/empty_widget.dart';
+import '../common/shimmer_home.dart';
 import '../common/widgets/card_product.dart';
 import '../common/widgets/home_swiper.dart';
 
@@ -17,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DataController _dataController = DataController();
+  final DataController _dataController = DataController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,27 +47,45 @@ class _HomePageState extends State<HomePage> {
         body: FutureBuilder(
             future: _dataController.getProducts(),
             builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                print('Shimmer Home');
+                return const ShimmerHome();
+              } else {
                 if (snapshot.hasError) {
-                  return Container();
+                  print('Has Error');
+                  return const EmptyWidget(
+                    message: 'Une erreur est survenue',
+                    imageSrc: 'assets/images/cancel.svg',
+                  );
                 } else if (snapshot.data == null) {
-                  return Container();
-                } else /* if (snapshot.hasData) */ {
-                  final result = snapshot.data;
-                  result!.fold((failure) {
-                    return Container();
-                  }, (data) {
-                    return _mainBody(data as List<ProductModel>);
-                  });
+                  print('Has No Data');
+                  return const EmptyWidget(
+                    message: 'Aucune donnée disponible',
+                    imageSrc: 'assets/images/no_data.svg',
+                  );
                 }
+                print('All Data');
+                final result = snapshot.data;
+                return result!.fold((failure) {
+                  return EmptyWidget(
+                    message: failure.props.first.toString(),
+                    imageSrc: 'assets/images/cancel.svg',
+                  );
+                }, (data) {
+                  if (data.isEmpty) {
+                    return const EmptyWidget(
+                      message: 'Aucune donnée disponible',
+                      imageSrc: 'assets/images/no_data.svg',
+                    );
+                  }
+                  return _mainBody(data as List<ProductModel>);
+                });
               }
-
-              return Container();
             }),
         bottomNavigationBar: _buildBottomNavBar());
   }
 
-  SingleChildScrollView _mainBody(List<ProductModel> data) {
+  Widget _mainBody(List<ProductModel> data) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),

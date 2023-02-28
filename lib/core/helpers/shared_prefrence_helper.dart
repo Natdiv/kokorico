@@ -27,7 +27,7 @@ class SharedPreferenceHelper {
   Future<bool> getFirstTimeStatus() async {
     return (await SharedPreferences.getInstance())
             .getBool(FisrtTime.FIRST_TIME.toString()) ??
-        false;
+        true;
   }
 
   Future<bool> getModeAdminStatus() async {

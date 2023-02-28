@@ -22,19 +22,19 @@ class ShimmerHome extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             verticalSpacer(height: 12),
-            _buildShimmer(36, width * 0.60),
-            verticalSpacer(height: 8),
-            _buildShimmer(36, width * 0.40),
+            Center(child: _buildShimmer(16, width * 0.60)),
+            verticalSpacer(height: 6),
+            Center(child: _buildShimmer(16, width * 0.40)),
             verticalSpacer(height: 20),
             // Swiper shimmer
-            _buildShimmer(height * 0.5, double.infinity),
+            _buildShimmer(height * 0.35, double.infinity),
             verticalSpacer(),
             // Notre catalogue shimmer
-            _buildShimmer(36, width * 0.60),
+            _buildShimmer(20, width * 0.60),
             verticalSpacer(height: 8),
-            _buildShimmer(140, double.infinity),
+            _buildShimmer(120, double.infinity),
             verticalSpacer(height: 8),
-            _buildShimmer(140, double.infinity),
+            _buildShimmer(120, double.infinity),
           ],
         ),
       ),
@@ -46,12 +46,14 @@ class ShimmerHome extends StatelessWidget {
       height: height,
       width: width,
       child: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!.withOpacity(0.8),
+        baseColor: AppColors.cardColor.withOpacity(0.8),
         highlightColor: Colors.white,
+        direction: ShimmerDirection.ltr,
+        period: const Duration(milliseconds: 3000),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColors.primaryColor,
+            color: AppColors.primaryColor.withOpacity(0.3),
           ),
         ),
       ),
