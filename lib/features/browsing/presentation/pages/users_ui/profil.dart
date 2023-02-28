@@ -48,24 +48,46 @@ class _ProfilePageState extends State<ProfilePage> {
                 verticalSpacer(height: 16),
                 _buildCardInfo(
                     title: 'Nom Complet',
-                    value:
-                        '${state.appUser!.firstName} ${state.appUser!.name}'),
+                    value: '${state.appUser!.firstName} ${state.appUser!.name}',
+                    icon: Icons.person_outline),
                 _buildCardInfo(
-                    title: 'Numero', value: state.appUser!.phoneNumber),
-                _buildCardInfo(title: 'Email', value: state.appUser!.email),
+                    title: 'Numero',
+                    value: state.appUser!.phoneNumber,
+                    icon: Icons.phone),
+                _buildCardInfo(
+                    title: 'Email',
+                    value: state.appUser!.email,
+                    icon: Icons.email),
                 _buildCardInfo(
                     title: 'Adresse de livraison',
-                    value: state.appUser!.address),
+                    value: state.appUser!.address,
+                    icon: Icons.home),
                 _buildCardInfo(
                     title: 'Référence',
-                    value: state.appUser!.referenceAddress ?? 'Non renseigné'),
-                verticalSpacer(height: 8),
-                _buildProfileActionButton(
-                    title: 'Modifier mon compte',
-                    color: AppColors.primaryColor),
-                verticalSpacer(height: 8),
-                _buildProfileActionButton(
-                    title: 'Supprimer mon compte', color: Colors.redAccent),
+                    value: state.appUser!.referenceAddress ?? 'Non renseigné',
+                    icon: Icons.help),
+                const Spacer(),
+                ListTile(
+                  title: Text('Activer le mode admin',
+                      style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              color: AppColors.primaryColorDark,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500))),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(
+                    Icons.admin_panel_settings,
+                    color: AppColors.primaryColorDark,
+                  ),
+                  trailing: Switch(
+                    value: true,
+                    onChanged: (value) {},
+                    activeColor: AppColors.primaryColorDark,
+                  ),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  onTap: () {},
+                )
               ],
             ),
           ),
@@ -74,60 +96,52 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildProfileActionButton(
-      {required String title, required Color color}) {
-    return Container(
-      height: 42,
-      width: double.infinity,
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {},
-          child: Center(
-            child: Text(title,
-                style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500))),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _builDivider() => Divider(
+  //       thickness: 1,
+  //       color: AppColors.primaryColor.withOpacity(0.25),
+  //     );
 
-  Widget _buildCardInfo({required String title, required String value}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.cardColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(title,
-                style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: AppColors.primaryColorDark,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500))),
-            verticalSpacer(height: 8),
-            Text(value,
-                style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: AppColors.primaryColorDark,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold))),
-          ]),
+  Widget _buildCardInfo(
+      {required String title, required String value, required IconData icon}) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: AppColors.primaryColor, size: 24),
+                const SizedBox(
+                  width: 16,
+                ),
+                Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(title,
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    color: AppColors.primaryColorDark,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500))),
+                        verticalSpacer(height: 0),
+                        Text(value,
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    color: AppColors.primaryColorDark,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold))),
+                      ]),
+                ),
+              ],
+            ),
+            verticalSpacer(height: 4),
+            Divider(
+              thickness: 1,
+              color: AppColors.primaryColor.withOpacity(0.25),
+            )
+          ],
         ),
       ),
     );
