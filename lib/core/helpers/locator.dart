@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/browsing/data/datasources/firebase_provider.dart';
 import '../../features/browsing/data/repositories/product_repository_impl.dart';
+import '../../features/browsing/domain/usescases/create_product.dart';
 import '../../features/browsing/domain/usescases/create_user_profile.dart';
 import '../network/network_info.dart';
 import 'shared_prefrence_helper.dart';
@@ -28,6 +29,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => CreateUserProfile(getIt()));
   getIt.registerLazySingleton(() => GetOneProduct(getIt()));
   getIt.registerLazySingleton(() => GetAllProducts(getIt()));
+  getIt.registerLazySingleton(() => CreateProduct(getIt()));
 
   // Repository
   getIt.registerLazySingleton<UserRepository>(

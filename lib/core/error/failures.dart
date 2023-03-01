@@ -17,6 +17,10 @@ class FirebaseFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
+  final String _message;
+  const NetworkFailure(this._message);
+
+  String get message => _message;
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [_message];
 }

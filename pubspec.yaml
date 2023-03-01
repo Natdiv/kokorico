@@ -42,7 +42,6 @@ dependencies:
   flutter_phoenix: ^1.1.0
   firebase_storage: ^11.0.14
   file_picker: ^5.2.5
-  fancy_shimmer_image: ^2.0.2
 
 dev_dependencies:
   flutter_test:

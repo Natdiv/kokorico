@@ -7,6 +7,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../datasources/firebase_provider.dart';
+import '../models/product_model.dart';
 
 class ProductRepositoryImplementation implements ProductRepository {
   final FirestoreDataProvider firestoreDataProvider;
@@ -16,9 +17,19 @@ class ProductRepositoryImplementation implements ProductRepository {
       {required this.firestoreDataProvider, required this.networkInfo});
 
   @override
-  Future<Either<Failure, void>> create({required Product product}) {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future<Either<Failure, void>> create({required Product product}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        var result =
+            await firestoreDataProvider.createProduct(product as ProductModel);
+        return Right(result);
+      } catch (e) {
+        final message = e.toString();
+        return Left(FirebaseFailure(message));
+      }
+    } else {
+      return const Left(NetworkFailure('NetworkFailure'));
+    }
   }
 
   @override
@@ -40,7 +51,7 @@ class ProductRepositoryImplementation implements ProductRepository {
       }
     } else {
       print('Network Failure');
-      return Left(NetworkFailure());
+      return const Left(NetworkFailure('NetworkFailure'));
     }
   }
 

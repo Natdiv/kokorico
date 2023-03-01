@@ -25,7 +25,7 @@ class UserRepositoryImplementation implements UserRepository {
         return Left(FirebaseFailure(message));
       }
     } else {
-      return Left(NetworkFailure());
+      return const Left(NetworkFailure('NetworkFailure'));
     }
   }
 
@@ -59,7 +59,7 @@ class UserRepositoryImplementation implements UserRepository {
         return Left(FirebaseFailure(message));
       }
     } else {
-      return Left(NetworkFailure());
+      return const Left(NetworkFailure('NetworkFailure'));
     }
   }
 }

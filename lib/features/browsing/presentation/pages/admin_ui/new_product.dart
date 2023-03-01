@@ -33,7 +33,9 @@ class _NewProductPageState extends State<NewProductPage> {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.platform.pickFiles(
+      allowedExtensions: ['jpg', 'png', 'jpeg'],
+    );
     if (result != null) {
       setState(() {
         pickedFile = result.files.first;
@@ -246,8 +248,9 @@ class _NewProductPageState extends State<NewProductPage> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              if (formKey.currentState!.validate()) {
-                                // _signupUser(context);
+                              if (formKey.currentState!.validate() &&
+                                  imageSrc!.isNotEmpty) {
+                                _createProduct();
                               }
                             },
                             child: Center(
@@ -294,4 +297,6 @@ class _NewProductPageState extends State<NewProductPage> {
           return Container();
         });
   }
+
+  void _createProduct() {}
 }

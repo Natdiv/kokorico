@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
+import 'package:kokorico/features/browsing/domain/entities/product.dart';
 
 import '../models/app_user_model.dart';
 
@@ -52,5 +53,22 @@ class FirestoreDataProvider {
     final products = querySnapshot.docs.map((e) => e.data()).toList();
     print("DATA SOURCES: PRODUCT => $products");
     return products;
+  }
+
+// Create a new product in the firestore
+  Future<void> createProduct(ProductModel product) async {
+    if (kDebugMode) {
+      print("DATA SOURCES: createProduct(user: $product");
+    }
+    final ref = firebaseFirestore.collection("products").doc().withConverter(
+          fromFirestore: ProductModel.fromFirestore,
+          toFirestore: (ProductModel _product, _) => _product.toFirestore(),
+        );
+
+    final querySnapshot = await ref.set(product);
+    if (kDebugMode) {
+      print("Added product: $ref");
+    }
+    return querySnapshot;
   }
 }
