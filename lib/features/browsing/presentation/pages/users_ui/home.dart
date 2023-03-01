@@ -8,7 +8,7 @@ import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
 import '../../controllers/data_controller.dart';
 import '../common/empty_widget.dart';
-import '../common/shimmer_home.dart';
+import '../common/widgets/shimmer_home.dart';
 import '../common/widgets/card_product.dart';
 import '../common/widgets/home_swiper.dart';
 

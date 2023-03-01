@@ -6,9 +6,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/core/const.dart';
+import 'package:kokorico/core/helpers/locator.dart';
+import 'package:kokorico/features/browsing/domain/entities/product.dart';
+import 'package:kokorico/features/browsing/domain/usescases/create_product.dart';
+import 'package:kokorico/features/browsing/presentation/pages/common/loading_page.dart';
+import 'package:kokorico/features/browsing/presentation/state/app_state.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../core/theme/colors.dart';
 import '../common/widgets/custom_button.dart';
+import '../common/widgets/success_or_failure.dart';
 
 class NewProductPage extends StatefulWidget {
   const NewProductPage({super.key});
@@ -18,6 +25,8 @@ class NewProductPage extends StatefulWidget {
 }
 
 class _NewProductPageState extends State<NewProductPage> {
+  CreateProduct createProduct = getIt<CreateProduct>();
+
   final formKey = GlobalKey<FormState>();
 
   late TextEditingController _nameController;
@@ -31,6 +40,12 @@ class _NewProductPageState extends State<NewProductPage> {
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+  bool finish = false;
+  bool? successOrFailure;
+  String? message;
+  String? textButton;
+  Function()? onTap;
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -70,6 +85,22 @@ class _NewProductPageState extends State<NewProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AppState>(context, listen: false);
+    if (!state.isbusy) {
+      if (finish) {
+        return SuccessOrFailureWidget(
+          message: message!,
+          textButton: textButton!,
+          successOrFailure: successOrFailure!,
+          onTap: onTap!,
+        );
+      }
+      return _mainBody(context);
+    }
+    return const LoadingScreen();
+  }
+
+  Widget _mainBody(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -298,5 +329,40 @@ class _NewProductPageState extends State<NewProductPage> {
         });
   }
 
-  void _createProduct() {}
+  void _createProduct() async {
+    final state = Provider.of<AppState>(context, listen: false);
+    state.isBusy = true;
+
+    final product = Product(
+      name: _nameController.text.trim(),
+      description: _descriptionController.text.trim(),
+      imageUrl: imageSrc!,
+      price: double.parse(_priceController.text.trim()),
+      unit: _unitController.text.trim(),
+    );
+
+    (await createProduct(product)).fold((failure) {
+      state.isBusy = false;
+      setState(() {
+        finish = true;
+        message = 'Une erreur est survenue: ${failure.props.first}';
+        textButton = 'Réessayer';
+        successOrFailure = false;
+        onTap = () {
+          finish = false;
+        };
+      });
+    }, (success) {
+      state.isBusy = false;
+      setState(() {
+        finish = true;
+        message = 'Produit enregistré avec succès';
+        textButton = 'Retour';
+        successOrFailure = true;
+        onTap = () {
+          Navigator.pop(context);
+        };
+      });
+    });
+  }
 }

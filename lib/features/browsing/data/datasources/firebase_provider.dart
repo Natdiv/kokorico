@@ -65,6 +65,7 @@ class FirestoreDataProvider {
           toFirestore: (ProductModel _product, _) => _product.toFirestore(),
         );
 
+    product.id = ref.id;
     final querySnapshot = await ref.set(product);
     if (kDebugMode) {
       print("Added product: $ref");

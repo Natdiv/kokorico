@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import 'package:kokorico/features/browsing/domain/entities/product.dart';
 import '../../../../core/helpers/utility.dart';
@@ -40,7 +41,9 @@ class AppUserModel extends AppUser {
   ) {
     final documentSnapshot = snapshot.data();
 
-    print("FROM FIRESTORE: ${documentSnapshot}");
+    if (kDebugMode) {
+      print("FROM FIRESTORE: $documentSnapshot");
+    }
     return AppUserModel(
       uid: snapshot.id,
       name: documentSnapshot?['name'] ?? '',

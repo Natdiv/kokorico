@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kokorico/core/theme/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../../../core/const.dart';
+import '../../../../../../core/const.dart';
 
 class ShimmerHome extends StatelessWidget {
   const ShimmerHome({super.key});
