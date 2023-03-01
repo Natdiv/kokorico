@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kokorico/features/browsing/data/models/app_user_model.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../state/auth_state.dart';

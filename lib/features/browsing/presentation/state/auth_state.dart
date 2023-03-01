@@ -7,7 +7,6 @@ import 'package:kokorico/core/usecases/usecase.dart';
 import 'package:kokorico/features/browsing/domain/usescases/create_user_profile.dart';
 import 'package:kokorico/features/browsing/domain/usescases/get_user_profile.dart';
 import 'package:kokorico/features/browsing/presentation/pages/auth/sms_code.dart';
-import '../../../../core/error/failures.dart';
 import '../../../../core/helpers/locator.dart';
 import '../../../../core/helpers/utility.dart';
 import '../../data/models/app_user_model.dart';

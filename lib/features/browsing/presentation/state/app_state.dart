@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import '../../../../core/helpers/locator.dart';
 import '../../../../core/helpers/shared_prefrence_helper.dart';
@@ -46,5 +48,11 @@ class AppState extends ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  setAdmiMode(Function rebirth) async {
+    await getIt<SharedPreferenceHelper>().setModeAdminStatus(!isModeAdmin);
+    notifyListeners();
+    rebirth();
   }
 }

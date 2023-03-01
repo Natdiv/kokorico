@@ -32,6 +32,7 @@ class Utility {
   }
 }
 
+// The rolw of the user
 class UserRole {
   static const String SUPER = 'SUPER';
   static const String ADMIN = 'ADMIN';

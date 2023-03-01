@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../../../../core/theme/colors.dart';
+import '../../../state/auth_state.dart';
+import 'liste_tile_item.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AuthState>(context, listen: false);
     return Drawer(
       // key: key,
       backgroundColor: AppColors.backgroundColor,
@@ -21,80 +26,52 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-          DrawerListTile(
+          ListTileItem(
             title: 'Dashboard',
             icon: Icons.dashboard,
             press: () {},
           ),
-          DrawerListTile(
+          ListTileItem(
             title: 'Ajouter un article',
             icon: Icons.add,
             press: () {},
           ),
-          DrawerListTile(
+          ListTileItem(
             title: 'Les articles',
             icon: Icons.list,
             press: () {},
           ),
-          DrawerListTile(
+          ListTileItem(
             title: 'Les commandes',
             icon: Icons.shopping_bag_outlined,
             press: () {},
           ),
-          DrawerListTile(
+          ListTileItem(
             title: 'Paiements',
             icon: Icons.payment_outlined,
             press: () {},
           ),
           const Spacer(),
-          DrawerListTile(
+          ListTileItem(
             title: 'Mode admin',
             icon: Icons.supervisor_account,
-            press: () {},
+            press: () {
+              state.setAdmiMode(() {
+                Phoenix.rebirth(context);
+              });
+            },
             trailing: Switch(
-              value: true,
-              onChanged: (value) {},
+              value: state.isModeAdmin,
+              onChanged: (value) {
+                state.setAdmiMode(() {
+                  Phoenix.rebirth(context);
+                });
+              },
               activeColor: AppColors.primaryColorDark,
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class DrawerListTile extends StatelessWidget {
-  const DrawerListTile({
-    Key? key,
-    required this.title,
-    required this.icon,
-    required this.press,
-    this.trailing,
-  }) : super(key: key);
-
-  final String title;
-  final IconData icon;
-  final Widget? trailing;
-  final VoidCallback press;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title,
-          style: GoogleFonts.poppins(
-              textStyle: const TextStyle(
-                  color: AppColors.primaryColorDark,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500))),
-      horizontalTitleGap: 0,
-      leading: Icon(
-        icon,
-        color: AppColors.primaryColorDark,
-      ),
-      trailing: (trailing != null) ? trailing : null,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      onTap: press,
     );
   }
 }

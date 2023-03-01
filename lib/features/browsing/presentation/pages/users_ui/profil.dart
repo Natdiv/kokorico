@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/const.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../state/auth_state.dart';
+import '../common/widgets/liste_tile_item.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -66,27 +68,43 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: 'Référence',
                     value: state.appUser!.referenceAddress ?? 'Non renseigné',
                     icon: Icons.help),
-                const Spacer(),
-                ListTile(
-                  title: Text('Activer le mode admin',
-                      style: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                              color: AppColors.primaryColorDark,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500))),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(
-                    Icons.admin_panel_settings,
-                    color: AppColors.primaryColorDark,
+                // const Spacer(),
+                verticalSpacer(height: 32),
+
+                Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.cardColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: ListTileItem(
+                    title: 'Le mode admin',
+                    icon: Icons.admin_panel_settings,
+                    press: () {
+                      state.setAdmiMode(() {
+                        Phoenix.rebirth(context);
+                      });
+                    },
+                    trailing: Switch(
+                      value: state.isModeAdmin,
+                      onChanged: (value) {
+                        // state.setAdmiMode(() {
+                        //   Phoenix.rebirth(context);
+                        // });
+                      },
+                    ),
                   ),
-                  trailing: Switch(
-                    value: true,
-                    onChanged: (value) {},
-                    activeColor: AppColors.primaryColorDark,
+                ),
+                verticalSpacer(height: 8),
+                Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.cardColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: ListTileItem(
+                    title: 'Se déconnecter',
+                    icon: Icons.logout,
+                    press: () {
+                      state.logoutCallback();
+                    },
                   ),
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  onTap: () {},
                 )
               ],
             ),
