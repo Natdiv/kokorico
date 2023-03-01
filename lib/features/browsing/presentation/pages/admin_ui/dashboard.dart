@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/features/browsing/presentation/state/app_state.dart';
+import 'package:provider/provider.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
 import '../common/widgets/drawer.dart';
@@ -12,12 +14,11 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
+    var state = Provider.of<AppState>(context, listen: false);
     return Scaffold(
-      key: _scaffoldKey,
+      key: state.scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: Text('Dashboard',
@@ -28,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     fontWeight: FontWeight.bold))),
         leading: IconButton(
             onPressed: () {
-              _scaffoldKey.currentState!.openDrawer();
+              state.scaffoldKey.currentState!.openDrawer();
             },
             color: AppColors.primaryColorDark,
             icon: const Icon(Icons.menu)),

@@ -55,6 +55,7 @@ class UserRepositoryImplementation implements UserRepository {
         var result = await firestoreDataProvider.getProfileUser(uid: uid);
         return Right(result!);
       } catch (e) {
+        print('ON FIREBASE FAILURE');
         final message = e.toString();
         return Left(FirebaseFailure(message));
       }

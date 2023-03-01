@@ -26,40 +26,46 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ListTileItem(
+          const ListTileItem(
             title: 'Dashboard',
             icon: Icons.dashboard,
-            press: () {},
+            selected: true,
+            route: '/dashboard',
           ),
-          ListTileItem(
+          const ListTileItem(
             title: 'Ajouter un article',
             icon: Icons.add,
-            press: () {},
+            route: '/new-product',
           ),
-          ListTileItem(
+          const ListTileItem(
             title: 'Les articles',
             icon: Icons.list,
-            press: () {},
+            route: '/all-products',
           ),
-          ListTileItem(
+          const ListTileItem(
             title: 'Les commandes',
             icon: Icons.shopping_bag_outlined,
-            press: () {},
+            route: '/all-orders',
           ),
-          ListTileItem(
+          const ListTileItem(
             title: 'Paiements',
             icon: Icons.payment_outlined,
-            press: () {},
+            route: '/payments-received',
           ),
           const Spacer(),
-          ListTileItem(
-            title: 'Mode admin',
-            icon: Icons.supervisor_account,
-            press: () {
-              state.setAdmiMode(() {
-                Phoenix.rebirth(context);
-              });
-            },
+          ListTile(
+            title: Text('Mode admin',
+                style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                        color: AppColors.primaryColorDark,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500))),
+            horizontalTitleGap: 0,
+            splashColor: AppColors.primaryColorDark,
+            leading: const Icon(
+              Icons.supervisor_account,
+              color: AppColors.primaryColorDark,
+            ),
             trailing: Switch(
               value: state.isModeAdmin,
               onChanged: (value) {
@@ -67,8 +73,14 @@ class AppDrawer extends StatelessWidget {
                   Phoenix.rebirth(context);
                 });
               },
-              activeColor: AppColors.primaryColorDark,
             ),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            onTap: () {
+              state.setAdmiMode(() {
+                Phoenix.rebirth(context);
+              });
+            },
           ),
         ],
       ),

@@ -9,7 +9,7 @@ class SuccessOrFailureWidget extends StatelessWidget {
   final bool successOrFailure;
   final String message;
   final String textButton;
-  final Function() onTap;
+  final Function onTap;
 
   const SuccessOrFailureWidget(
       {super.key,
@@ -35,19 +35,20 @@ class SuccessOrFailureWidget extends StatelessWidget {
               size: 40,
             ),
             verticalSpacer(height: 36),
-            Text(message,
-                style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: AppColors.primaryColorDark,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500))),
-            const Spacer(),
+            Center(
+              child: Text(message,
+                  style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                          color: AppColors.primaryColorDark,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500))),
+            ),
             verticalSpacer(height: 16),
             CustomButton(
                 text: textButton,
                 textColor: Colors.white,
                 backgroundColor: AppColors.primaryColor,
-                onTap: onTap),
+                onTap: onTap()),
             const Spacer(),
           ],
         ),

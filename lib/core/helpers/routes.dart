@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../features/browsing/presentation/pages/admin_ui/all-orders.dart';
+import '../../features/browsing/presentation/pages/admin_ui/all_orders.dart';
 import '../../features/browsing/presentation/pages/admin_ui/dashboard.dart';
 import '../../features/browsing/presentation/pages/admin_ui/new_product.dart';
 import '../../features/browsing/presentation/pages/admin_ui/payments-received.dart';

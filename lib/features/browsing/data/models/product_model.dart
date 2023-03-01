@@ -11,8 +11,8 @@ class ProductModel extends Product {
     required String imageUrl,
     required double price,
     required String unit,
-    required double rating,
-    required bool isAvailable,
+    double rating = 0,
+    bool isAvailable = true,
   }) : super(
             id: id,
             name: name,
@@ -63,9 +63,9 @@ class ProductModel extends Product {
       name: documentSnapshot?['name'] ?? '',
       description: documentSnapshot?['description'] ?? '',
       imageUrl: documentSnapshot?['imageUrl'] ?? '',
-      price: double.parse(documentSnapshot?['price'] ?? '0'),
+      price: documentSnapshot?['price'] ?? 0,
       unit: documentSnapshot?['unit'] ?? '',
-      rating: double.parse(documentSnapshot?['rating'] ?? '0'),
+      rating: documentSnapshot?['rating'] ?? 0,
       isAvailable: documentSnapshot?['isAvailable'] ?? false,
     );
   }

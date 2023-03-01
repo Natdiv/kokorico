@@ -30,38 +30,6 @@ class AuthState extends AppState {
   final GetUserProfile _getUserProfile = getIt<GetUserProfile>();
   final CreateUserProfile _createUserProfile = getIt<CreateUserProfile>();
 
-  // AppState get appState => getIt<AppState>();
-
-  /// When user entering SMS code
-  // bool _isCodeSent = false;
-  // bool get isCodeSent => _isCodeSent;
-  // set isCodeSent(bool value) {
-  //   if (value != _isCodeSent) {
-  //     _isCodeSent = value;
-  //     notifyListeners();
-  //   }
-  // }
-
-  /// The verification ID
-  // late String _verificationId;
-  // String get verificationId => _verificationId;
-  // set verificationId(String value) {
-  //   if (value != _verificationId) {
-  //     _verificationId = value;
-  //     notifyListeners();
-  //   }
-  // }
-
-  /// Authentification error
-  // late String _error;
-  // String get errorAuth => _error;
-  // set errorAuth(value) {
-  //   if (value != _error) {
-  //     _error = value;
-  //     notifyListeners();
-  //   }
-  // }
-
   /// Logout from device
   void logoutCallback() async {
     authStatus = AuthStatus.NOT_LOGGED_IN;
@@ -78,7 +46,9 @@ class AuthState extends AppState {
     try {
       isBusy = true;
       Utility.logEvent('get_currentUSer', parameter: {});
+      // user = _firebaseAuth.currentUser;
       user = _firebaseAuth.currentUser;
+      print('--THE CURRENT USER: $user');
       if (user != null) {
         (await _getUserProfile(Params(id: user!.uid))).fold((failure) {
           var message = failure.props.first;
@@ -93,6 +63,7 @@ class AuthState extends AppState {
           userId = user!.uid;
         });
       } else {
+        print('NO USER LOGGED IN');
         authStatus = AuthStatus.NOT_LOGGED_IN;
       }
       isBusy = false;
@@ -217,18 +188,4 @@ class AuthState extends AppState {
       }
     }
   }
-
-  // signinWithPhone(String verificationId, String smsCode) async {
-  //   isBusy = true;
-  //   try {
-  //     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //         verificationId: verificationId, smsCode: smsCode);
-  //     await _firebaseAuth.signInWithCredential(credential);
-  //     isBusy = false;
-  //     // Get.offAll(() => MainPage());
-  //   } catch (e) {
-  //     print(e);
-  //     isBusy = false;
-  //   }
-  // }
 }

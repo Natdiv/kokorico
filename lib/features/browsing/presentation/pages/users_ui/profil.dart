@@ -75,37 +75,57 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: BoxDecoration(
                       color: AppColors.cardColor,
                       borderRadius: BorderRadius.circular(10)),
-                  child: ListTileItem(
-                    title: 'Le mode admin',
-                    icon: Icons.admin_panel_settings,
-                    press: () {
+                  child: ListTile(
+                    title: Text('Le mode admin',
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                                color: AppColors.primaryColorDark,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500))),
+                    horizontalTitleGap: 0,
+                    splashColor: AppColors.primaryColorDark,
+                    leading: const Icon(
+                      Icons.admin_panel_settings,
+                      color: AppColors.primaryColorDark,
+                    ),
+                    trailing: Switch(
+                      value: state.isModeAdmin,
+                      onChanged: (value) {},
+                    ),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    onTap: () {
                       state.setAdmiMode(() {
                         Phoenix.rebirth(context);
                       });
                     },
-                    trailing: Switch(
-                      value: state.isModeAdmin,
-                      onChanged: (value) {
-                        // state.setAdmiMode(() {
-                        //   Phoenix.rebirth(context);
-                        // });
-                      },
-                    ),
                   ),
                 ),
                 verticalSpacer(height: 8),
                 Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.cardColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: ListTileItem(
-                    title: 'Se déconnecter',
-                    icon: Icons.logout,
-                    press: () {
-                      state.logoutCallback();
-                    },
-                  ),
-                )
+                    decoration: BoxDecoration(
+                        color: AppColors.cardColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      title: Text('Se déconnecter',
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                  color: AppColors.primaryColorDark,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500))),
+                      horizontalTitleGap: 0,
+                      splashColor: AppColors.primaryColorDark,
+                      leading: const Icon(
+                        Icons.logout,
+                        color: AppColors.primaryColorDark,
+                      ),
+                      // trailing: (trailing != null) ? trailing : null,
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      onTap: () {
+                        state.logoutCallback();
+                      },
+                    ))
               ],
             ),
           ),

@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import '../../../../core/helpers/locator.dart';
 import '../../../../core/helpers/shared_prefrence_helper.dart';
 
 class AppState extends ChangeNotifier {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
+
   bool _isBusy = false;
   bool get isbusy => _isBusy;
   set isBusy(bool value) {

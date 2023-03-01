@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
+import '../../../../../core/theme/colors.dart';
 import 'empty_widget.dart';
 
 class AccessDeniedPage extends StatefulWidget {
@@ -14,8 +13,16 @@ class AccessDeniedPage extends StatefulWidget {
 class _AccessDeniedPageState extends State<AccessDeniedPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: EmptyWidget(
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            color: AppColors.primaryColorDark,
+            icon: const Icon(Icons.arrow_back_ios)),
+      ),
+      body: const EmptyWidget(
         message: 'Vous n\'avez pas acces a cette page',
         imageSrc: 'assets/images/access_denied.svg',
       ),
