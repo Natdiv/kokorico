@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
-import 'package:kokorico/features/browsing/domain/entities/product.dart';
 
+import '../../../../core/helpers/utility.dart';
 import '../models/app_user_model.dart';
+import '../models/orders_model.dart';
 
 class FirestoreDataProvider {
   final FirebaseFirestore firebaseFirestore;
@@ -106,5 +107,46 @@ class FirestoreDataProvider {
       print("Updated cart user: $ref");
     }
     return querySnapshot;
+  }
+
+  /// Create a new order in the firestore
+  Future<void> createOrder(OrderModel orderModel) {
+    final ref = firebaseFirestore.collection("orders").doc().withConverter(
+          fromFirestore: OrderModel.fromFirestore,
+          toFirestore: (OrderModel order, _) => order.toFirestore(),
+        );
+
+    orderModel.setId = ref.id;
+    final querySnapshot = ref.set(orderModel);
+    if (kDebugMode) {
+      print("Added order: $ref");
+    }
+    return querySnapshot;
+  }
+
+  /// Retrieve all orders from firestore
+  Future<List<OrderModel>> getOrders() async {
+    final ref = firebaseFirestore.collection("orders").withConverter(
+          fromFirestore: OrderModel.fromFirestore,
+          toFirestore: (OrderModel order, _) => order.toFirestore(),
+        );
+    final querySnapshot = await ref.get();
+    final orders = querySnapshot.docs.map((e) => e.data()).toList();
+    // print("DATA SOURCES: PRODUCT => $products");
+    return orders;
+  }
+
+  /// Retrieve all orders for today from firestore
+  Future<List<OrderModel>> getOrdersForToday() async {
+    final ref = firebaseFirestore
+        .collection("orders")
+        .withConverter(
+          fromFirestore: OrderModel.fromFirestore,
+          toFirestore: (OrderModel order, _) => order.toFirestore(),
+        )
+        .where('createdAt', isGreaterThanOrEqualTo: getFromTodayDate());
+    final querySnapshot = await ref.get();
+    final orders = querySnapshot.docs.map((e) => e.data()).toList();
+    return orders;
   }
 }

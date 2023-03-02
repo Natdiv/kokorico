@@ -70,3 +70,11 @@ SnackBar snackBar(String message) => SnackBar(
         }
       },
     );
+
+int getFromTodayDate() {
+  int year = DateTime.now().year;
+  int month = DateTime.now().month;
+  int day = DateTime.now().day;
+  DateTime time = DateTime(year, month, day);
+  return time.millisecondsSinceEpoch;
+}
