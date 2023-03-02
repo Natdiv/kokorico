@@ -55,9 +55,9 @@ class ProductModel extends Product {
   ) {
     final documentSnapshot = snapshot.data();
 
-    if (kDebugMode) {
-      print("PRODUCT FROM FIRESTORE: $documentSnapshot");
-    }
+    // if (kDebugMode) {
+    //   print("PRODUCT FROM FIRESTORE: $documentSnapshot");
+    // }
     return ProductModel(
       id: snapshot.id,
       name: documentSnapshot?['name'] ?? '',

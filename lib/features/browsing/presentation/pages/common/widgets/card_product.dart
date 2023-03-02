@@ -1,3 +1,4 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,7 +16,7 @@ class CardProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Routes.goTo(context, routeName);
+        Routes.goTo(context, '/product', args: product);
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 24),
@@ -95,6 +96,7 @@ class CardProduct extends StatelessWidget {
                 child: Container(
                   width: 140,
                   height: 140,
+                  clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -108,8 +110,14 @@ class CardProduct extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Image.asset('assets/images/chicken.png',
-                      fit: BoxFit.fitHeight),
+                  child: FancyShimmerImage(
+                    imageUrl: product.imageUrl,
+                    boxFit: BoxFit.fitHeight,
+                    shimmerBaseColor: AppColors.primaryColor.withOpacity(0.25),
+                    shimmerHighlightColor: Colors.white,
+                    shimmerBackColor:
+                        AppColors.primaryColorDark.withOpacity(0.40),
+                  ),
                 ),
               ),
             ],

@@ -1,10 +1,15 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
+import '../common/widgets/custom_button.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key});
+  const ProductDetailsPage({super.key, required this.product});
+
+  final ProductModel product;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -39,11 +44,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             },
             color: AppColors.primaryColorDark,
             icon: const Icon(Icons.arrow_back_ios)),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              color: AppColors.primaryColorDark,
-              icon: const Icon(Icons.add_shopping_cart)),
+        actions: const [
+          // IconButton(
+          //     onPressed: () {},
+          //     color: AppColors.primaryColorDark,
+          //     icon: const Icon(Icons.add_shopping_cart)),
         ],
       ),
       body: SingleChildScrollView(
@@ -53,15 +58,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               height: size(context).height * 0.35,
               color: AppColors.cardColor,
               child: Center(
-                  child: Image.asset('assets/images/chicken.png',
-                      fit: BoxFit.cover)),
+                child: FancyShimmerImage(
+                  imageUrl: widget.product.imageUrl,
+                  boxFit: BoxFit.cover,
+                  shimmerBaseColor: AppColors.primaryColor.withOpacity(0.25),
+                  shimmerHighlightColor: Colors.white,
+                  shimmerBackColor:
+                      AppColors.primaryColorDark.withOpacity(0.40),
+                ),
+              ),
             ),
             verticalSpacer(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 children: [
-                  Text('Le coq',
+                  Text(widget.product.name,
                       style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold))),
@@ -71,22 +83,30 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       icon: const Icon(Icons.favorite_border)),
                   IconButton(
                       onPressed: () {}, icon: const Icon(Icons.share_outlined)),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.add_shopping_cart)),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text('details' * 100,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400))),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(widget.product.description,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.justify,
+                    style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w400))),
+              ),
             ),
             verticalSpacer(height: 16),
-            _buildItemDetials('Prix', '12, 000 FC'),
-            _buildItemDetials('Unité', '1 Kg'),
-            _buildItemDetials('Disponible', 'Oui'),
+            _buildItemDetials('Prix', '${widget.product.price} FC'),
+            _buildItemDetials('Unité', widget.product.unit),
+            _buildItemDetials(
+                'Disponible', widget.product.isAvailable ? 'Oui' : 'Non'),
             verticalSpacer(height: 16),
             _buildQuantiteWidget(),
           ],

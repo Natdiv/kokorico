@@ -1,12 +1,17 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../core/const.dart';
 import '../../../../../core/theme/colors.dart';
-import '../common/widgets/card_cart_product.dart';
+import '../../../data/models/product_model.dart';
+import '../../controllers/data_controller.dart';
+import '../common/empty_widget.dart';
+import '../common/widgets/shimmer_list.dart';
 
 class ProductListPage extends StatelessWidget {
-  const ProductListPage({super.key});
+  ProductListPage({super.key});
+
+  final DataController _dataController = DataController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +31,65 @@ class ProductListPage extends StatelessWidget {
             color: AppColors.primaryColorDark,
             icon: const Icon(Icons.arrow_back_ios)),
       ),
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-            itemCount: 6,
-            shrinkWrap: true,
-            primary: false,
-            itemBuilder: (context, index) {
-              return const AdminCardProduct();
-            }),
-      )),
+      body: FutureBuilder(
+          future: _dataController.getProducts(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              print('Shimmer Home');
+              return const ShimmerList();
+            } else {
+              if (snapshot.hasError) {
+                print('Has Error');
+                return const EmptyWidget(
+                  message: 'Une erreur est survenue',
+                  imageSrc: 'assets/images/cancel.svg',
+                );
+              } else if (snapshot.data == null) {
+                print('Has No Data');
+                return const EmptyWidget(
+                  message: 'Aucune donnée disponible',
+                  imageSrc: 'assets/images/no_data.svg',
+                );
+              }
+              final result = snapshot.data;
+              return result!.fold((failure) {
+                return EmptyWidget(
+                  message: failure.props.first.toString(),
+                  imageSrc: 'assets/images/cancel.svg',
+                );
+              }, (data) {
+                if (data.isEmpty) {
+                  return const EmptyWidget(
+                    message: 'Aucune donnée disponible',
+                    imageSrc: 'assets/images/no_data.svg',
+                  );
+                }
+                return _mainBody(data as List<ProductModel>);
+              });
+            }
+          }),
     );
+  }
+
+  Widget _mainBody(List<ProductModel> data) {
+    return SingleChildScrollView(
+        child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView.builder(
+          itemCount: data.length,
+          shrinkWrap: true,
+          primary: false,
+          itemBuilder: (context, index) {
+            return AdminCardProduct(product: data[index]);
+          }),
+    ));
   }
 }
 
 class AdminCardProduct extends StatelessWidget {
-  const AdminCardProduct({super.key});
+  ProductModel product;
+
+  AdminCardProduct({super.key, required this.product});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -66,9 +113,12 @@ class AdminCardProduct extends StatelessWidget {
             Container(
               width: 112,
               color: Colors.transparent,
-              child: Image.asset(
-                'assets/images/chicken.png',
-                fit: BoxFit.scaleDown,
+              child: FancyShimmerImage(
+                imageUrl: product.imageUrl,
+                boxFit: BoxFit.contain,
+                shimmerBaseColor: AppColors.primaryColor.withOpacity(0.25),
+                shimmerHighlightColor: Colors.white,
+                shimmerBackColor: AppColors.primaryColorDark.withOpacity(0.40),
               ),
             ),
             Expanded(
@@ -77,15 +127,15 @@ class AdminCardProduct extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Poulets sur pied',
+                    Text(product.name,
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))),
-                    Text('Prix: 7, 500 FC',
+                    Text('Prix: ${product.price} FC',
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500))),
-                    Text('Unité: Kg',
+                    Text('Unité: ${product.unit}',
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500))),

@@ -43,6 +43,7 @@ dependencies:
   firebase_storage: ^11.0.14
   file_picker: ^5.2.5
   vibration: ^1.7.6
+  fancy_shimmer_image: ^2.0.2
 
 dev_dependencies:
   flutter_test:

@@ -44,14 +44,14 @@ class FirestoreDataProvider {
 
   // Retrieve all products from firestore
   Future<List<ProductModel>> getProducts() async {
-    print("DATA SOURCES: getProducts()");
+    // print("DATA SOURCES: getProducts()");
     final ref = firebaseFirestore.collection("products").withConverter(
           fromFirestore: ProductModel.fromFirestore,
           toFirestore: (ProductModel product, _) => product.toFirestore(),
         );
     final querySnapshot = await ref.get();
     final products = querySnapshot.docs.map((e) => e.data()).toList();
-    print("DATA SOURCES: PRODUCT => $products");
+    // print("DATA SOURCES: PRODUCT => $products");
     return products;
   }
 

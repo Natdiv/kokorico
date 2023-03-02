@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../features/browsing/data/models/product_model.dart';
 import '../../features/browsing/presentation/pages/admin_ui/all_orders.dart';
 import '../../features/browsing/presentation/pages/admin_ui/dashboard.dart';
 import '../../features/browsing/presentation/pages/admin_ui/new_product.dart';
@@ -47,7 +48,7 @@ class Routes {
       case '/all-products':
         return MaterialPageRoute(
           builder: (context) => (mustBeAdminUser(context))
-              ? const ProductListPage()
+              ? ProductListPage()
               : const AccessDeniedPage(),
         );
       case '/all-orders':
@@ -69,8 +70,9 @@ class Routes {
           builder: (context) => const HomePage(),
         );
       case '/product':
+        final product = settings.arguments as ProductModel;
         return MaterialPageRoute(
-          builder: (context) => const ProductDetailsPage(),
+          builder: (context) => ProductDetailsPage(product: product),
         );
       case '/cart':
         return MaterialPageRoute(
@@ -129,8 +131,8 @@ class Routes {
         state.appUser!.role == UserRole.ADMIN);
   }
 
-  static void goTo(BuildContext context, String routeName) {
-    Navigator.pushNamed(context, routeName);
+  static void goTo(BuildContext context, String routeName, {dynamic args}) {
+    Navigator.pushNamed(context, routeName, arguments: args);
   }
 
   static void pushReplacement(BuildContext context, String routeName) {

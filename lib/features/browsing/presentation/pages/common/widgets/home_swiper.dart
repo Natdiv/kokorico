@@ -1,4 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
@@ -15,15 +16,15 @@ class HomeSwiper extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = size(context).height;
     return SizedBox(
-      height: height * 0.5,
+      height: height * 0.4,
       width: double.infinity,
       child: Swiper(
           itemWidth: height * 0.5,
-          itemHeight: height * 0.5,
+          itemHeight: height * 0.4,
           scale: 0.9,
           layout: SwiperLayout.TINDER,
           autoplay: true,
-          autoplayDelay: 4000,
+          autoplayDelay: 5000,
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
@@ -59,12 +60,20 @@ class HomeSwiper extends StatelessWidget {
                               Text(data[index].name,
                                   style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   )),
                               Expanded(
-                                  child:
-                                      Image.asset('assets/images/chicken.png'))
+                                child: FancyShimmerImage(
+                                  imageUrl: data[index].imageUrl,
+                                  boxFit: BoxFit.contain,
+                                  shimmerBaseColor:
+                                      AppColors.primaryColor.withOpacity(0.25),
+                                  shimmerHighlightColor: Colors.white,
+                                  shimmerBackColor: AppColors.primaryColorDark
+                                      .withOpacity(0.40),
+                                ),
+                              )
                             ]),
                       ),
                     )
