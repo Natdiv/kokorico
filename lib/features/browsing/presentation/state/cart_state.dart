@@ -16,8 +16,32 @@ class CartState extends AuthState {
 
   /// Adds a product to the cart
   addCart(Map<String, int> cartRow) {
-    _cart.add(cartRow);
+    (_cart.contains(cartRow))
+        ? _cart[_cart.indexOf(cartRow)]
+            .update(cartRow.keys.first, (value) => value + 1)
+        : _cart.add(cartRow);
     notifyListeners();
+  }
+
+  /// Update a product quantity in the cart
+  updateCart(String id, int quantity) {
+    for (var i = 0; i < _cart.length; i++) {
+      if (_cart[i].keys.first == id) {
+        _cart[i].update(id, (value) => quantity);
+      }
+    }
+    notifyListeners();
+  }
+
+  /// Checks if a product is in the cart
+  bool isInCart(String id) {
+    var isInCart = false;
+    for (var element in _cart) {
+      if (element.keys.first == id) {
+        isInCart = true;
+      }
+    }
+    return isInCart;
   }
 
   /// Adds a product to the favorites
@@ -35,11 +59,12 @@ class CartState extends AuthState {
   /// Returns the quantity of a product in the cart
   int getQuantity(String id) {
     var quantity = 0;
-    _cart.forEach((element) {
+    for (var element in _cart) {
       if (element.keys.first == id) {
         quantity = element.values.first;
+        return quantity;
       }
-    });
+    }
     return quantity;
   }
 
@@ -62,4 +87,8 @@ class CartState extends AuthState {
   }
 
   /// Removes a product from the cart
+  void removeFromCart(String s) {
+    _cart.removeWhere((element) => element.keys.first == s);
+    notifyListeners();
+  }
 }

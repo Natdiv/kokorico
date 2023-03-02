@@ -58,7 +58,7 @@ SnackBar snackBar(String message) => SnackBar(
       closeIconColor: Colors.white,
       duration: const Duration(milliseconds: 5000),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-      behavior: SnackBarBehavior.fixed,
+      behavior: SnackBarBehavior.floating,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(16),
@@ -66,7 +66,7 @@ SnackBar snackBar(String message) => SnackBar(
       ),
       onVisible: () async {
         if (await Vibration.hasVibrator() ?? false) {
-          Vibration.vibrate();
+          Vibration.vibrate(duration: 300);
         }
       },
     );

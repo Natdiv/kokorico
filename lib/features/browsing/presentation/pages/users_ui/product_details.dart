@@ -23,11 +23,20 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late TextEditingController _quantityController;
   final DataController _dataController = DataController();
 
-  int _quantity = 1;
+  late int _quantity;
 
   @override
   initState() {
     super.initState();
+    final cartState = Provider.of<CartState>(context, listen: false);
+    if (cartState.isInCart(widget.product.id!)) {
+      _quantity = cartState.getCart
+          .firstWhere((element) => element.keys.first == widget.product.id)
+          .values
+          .first;
+    } else {
+      _quantity = 1;
+    }
     _quantityController = TextEditingController(text: _quantity.toString());
   }
 
@@ -51,12 +60,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             },
             color: AppColors.primaryColorDark,
             icon: const Icon(Icons.arrow_back_ios)),
-        actions: const [
-          // IconButton(
-          //     onPressed: () {},
-          //     color: AppColors.primaryColorDark,
-          //     icon: const Icon(Icons.add_shopping_cart)),
-        ],
+        actions: const [],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -90,17 +94,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         Map<String, int> cartItem = {
                           widget.product.id!: _quantity
                         };
-                        if (cartState.getCart.contains(cartItem)) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar('Produit déjà dans le panier'));
-                          return;
-                        }
-                        // if (state.userId == null) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(snackBar(
-                        //       'Connectez-vous pour ajouter au panier'));
-                        //   print(state.user);
-                        //   return;
-                        // }
+
+                        var isUpdate = cartState.isInCart(cartItem.keys.first);
+
                         cartState.addCart(cartItem);
                         _dataController
                             .updateCart(state.userId, cartState.getCart)
@@ -110,13 +106,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 snackBar('Une erreur est survenue'));
                             print(failure.props.first);
                           }, (_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                snackBar('Produit ajouté au panier'));
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar(
+                                isUpdate
+                                    ? 'Le panier a été mis à jour'
+                                    : 'Produit ajouté au panier'));
                             state.getCurrentUser();
                           });
                         });
                       },
-                      icon: const Icon(Icons.add_shopping_cart)),
+                      icon: Icon((cartState.isInCart(widget.product.id!))
+                          ? Icons.remove_shopping_cart
+                          : Icons.add_shopping_cart)),
                   IconButton(
                       onPressed: () {},
                       icon: const Icon(Icons.favorite_border)),

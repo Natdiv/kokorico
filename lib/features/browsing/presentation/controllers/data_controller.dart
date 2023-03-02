@@ -24,6 +24,7 @@ class DataController {
     return _getCartProducts(list);
   }
 
+  /// Updates the cart in the database
   Future<Either<Failure, void>> updateCart(
       String uid, List<Map<String, int>> cart) {
     return _updateCart(uid, cart);

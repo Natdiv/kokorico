@@ -1,10 +1,15 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../core/const.dart';
 import '../../../../../../core/theme/colors.dart';
+import '../../../controllers/data_controller.dart';
+import '../../../state/auth_state.dart';
+import '../../../state/cart_state.dart';
 
 class CardCartProduct extends StatefulWidget {
   final ProductModel product;
@@ -18,12 +23,22 @@ class CardCartProduct extends StatefulWidget {
 }
 
 class _CardCartProductState extends State<CardCartProduct> {
+  final DataController _dataController = DataController();
   late TextEditingController _quantityController;
-  int _quantity = 1;
+  late int _quantity;
 
   @override
   initState() {
     super.initState();
+    final cartState = Provider.of<CartState>(context, listen: false);
+    if (cartState.isInCart(widget.product.id!)) {
+      _quantity = cartState.getCart
+          .firstWhere((element) => element.keys.first == widget.product.id)
+          .values
+          .first;
+    } else {
+      _quantity = 1;
+    }
     _quantityController =
         TextEditingController(text: widget.quantity.toString());
   }
@@ -38,6 +53,8 @@ class _CardCartProductState extends State<CardCartProduct> {
 
   @override
   Widget build(BuildContext context) {
+    final cartState = Provider.of<CartState>(context, listen: false);
+    final authState = Provider.of<AuthState>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Container(
@@ -100,7 +117,17 @@ class _CardCartProductState extends State<CardCartProduct> {
                                     color: Colors.white,
                                     size: 20,
                                   )),
-                              onTap: () {},
+                              onTap: () async {
+                                cartState.removeFromCart(widget.product.id!);
+
+                                _dataController
+                                    .updateCart(
+                                        authState.userId, cartState.getCart)
+                                    .then((value) =>
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar(
+                                                'Produit supprimé du panier')));
+                              },
                             ),
                           ),
                         ),
@@ -117,6 +144,8 @@ class _CardCartProductState extends State<CardCartProduct> {
   }
 
   Widget _buildQuantiteWidget() {
+    final cartState = Provider.of<CartState>(context, listen: false);
+    final authState = Provider.of<AuthState>(context, listen: false);
     return SizedBox(
       height: 30,
       child: ClipRRect(
@@ -129,6 +158,9 @@ class _CardCartProductState extends State<CardCartProduct> {
                   setState(() {
                     _quantity--;
                     _quantityController.text = _quantity.toString();
+                    cartState.updateCart(widget.product.id!, _quantity);
+                    _dataController.updateCart(
+                        authState.userId, cartState.getCart);
                   });
                 },
                 child: Container(
@@ -166,6 +198,9 @@ class _CardCartProductState extends State<CardCartProduct> {
                     }
                     setState(() {
                       _quantity = int.parse(value);
+                      cartState.updateCart(widget.product.id!, _quantity);
+                      _dataController.updateCart(
+                          authState.userId, cartState.getCart);
                     });
                   },
                   decoration: InputDecoration(
@@ -185,6 +220,9 @@ class _CardCartProductState extends State<CardCartProduct> {
                   setState(() {
                     _quantity++;
                     _quantityController.text = _quantity.toString();
+                    cartState.updateCart(widget.product.id!, _quantity);
+                    _dataController.updateCart(
+                        authState.userId, cartState.getCart);
                   });
                 },
                 child: Container(
