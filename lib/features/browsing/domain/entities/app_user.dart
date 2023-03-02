@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:kokorico/features/browsing/domain/entities/product.dart';
 
 import '../../../../core/helpers/utility.dart';
 
@@ -17,8 +16,8 @@ class AppUser extends Equatable {
   final String? referenceAddress;
   final String role;
   final bool isVerified;
-  final List<Product> favorites;
-  final List<Product> cart;
+  final List<Map<String, int>> favorites;
+  final List<Map<String, int>> cart;
 
   const AppUser({
     required this.uid,

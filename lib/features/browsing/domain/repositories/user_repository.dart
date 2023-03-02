@@ -14,4 +14,7 @@ abstract class UserRepository {
   Future<Either<Failure, void>> update(
       {required String uid, required AppUser appUser});
   Future<Either<Failure, void>> delete({required String uid});
+
+  Future<Either<Failure, void>> updateCart(
+      {required String uid, required List<Map<String, int>> cart});
 }

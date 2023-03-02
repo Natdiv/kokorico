@@ -13,6 +13,8 @@ import '../../features/browsing/data/datasources/firebase_provider.dart';
 import '../../features/browsing/data/repositories/product_repository_impl.dart';
 import '../../features/browsing/domain/usescases/create_product.dart';
 import '../../features/browsing/domain/usescases/create_user_profile.dart';
+import '../../features/browsing/domain/usescases/get_cart_products.dart';
+import '../../features/browsing/domain/usescases/update_user_cart.dart';
 import '../network/network_info.dart';
 import 'shared_prefrence_helper.dart';
 
@@ -30,6 +32,8 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => GetOneProduct(getIt()));
   getIt.registerLazySingleton(() => GetAllProducts(getIt()));
   getIt.registerLazySingleton(() => CreateProduct(getIt()));
+  getIt.registerLazySingleton(() => GetCartProducts(getIt()));
+  getIt.registerLazySingleton(() => UpdateUserCart(getIt()));
 
   // Repository
   getIt.registerLazySingleton<UserRepository>(

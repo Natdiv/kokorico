@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/const.dart';
 import '../../../../../core/theme/colors.dart';
-import 'widgets/custom_button.dart';
 
 class EmptyWidget extends StatelessWidget {
   final String imageSrc;
@@ -19,6 +18,7 @@ class EmptyWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(),
             SizedBox(
@@ -28,12 +28,16 @@ class EmptyWidget extends StatelessWidget {
               height: size(context).height * 0.30,
             )),
             verticalSpacer(height: 36),
-            Text(message,
-                style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: AppColors.primaryColorDark,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500))),
+            Align(
+              alignment: Alignment.center,
+              child: Text(message,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                          color: AppColors.primaryColorDark,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500))),
+            ),
             const Spacer(),
             verticalSpacer(height: 16),
             // CustomButton(

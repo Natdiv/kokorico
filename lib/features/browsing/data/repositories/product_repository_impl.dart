@@ -67,4 +67,22 @@ class ProductRepositoryImplementation implements ProductRepository {
     // TODO: implement update
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, List<Product>>> readSome(
+      {required List<String> list}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        var result = await firestoreDataProvider.getSomeProducts(list);
+        return Right(result);
+      } catch (e) {
+        final message = e.toString();
+        print('Product Repository Implementation: $message');
+        return Left(FirebaseFailure(message));
+      }
+    } else {
+      print('Network Failure');
+      return const Left(NetworkFailure('NetworkFailure'));
+    }
+  }
 }

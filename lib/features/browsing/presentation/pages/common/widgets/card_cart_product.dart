@@ -1,11 +1,17 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/features/browsing/data/models/product_model.dart';
 
 import '../../../../../../core/const.dart';
 import '../../../../../../core/theme/colors.dart';
 
 class CardCartProduct extends StatefulWidget {
-  const CardCartProduct({super.key});
+  final ProductModel product;
+  final int quantity;
+
+  const CardCartProduct(
+      {super.key, required this.product, required this.quantity});
 
   @override
   State<CardCartProduct> createState() => _CardCartProductState();
@@ -18,7 +24,8 @@ class _CardCartProductState extends State<CardCartProduct> {
   @override
   initState() {
     super.initState();
-    _quantityController = TextEditingController(text: _quantity.toString());
+    _quantityController =
+        TextEditingController(text: widget.quantity.toString());
   }
 
   @override
@@ -52,9 +59,12 @@ class _CardCartProductState extends State<CardCartProduct> {
             Container(
               width: 112,
               color: Colors.transparent,
-              child: Image.asset(
-                'assets/images/chicken.png',
-                fit: BoxFit.scaleDown,
+              child: FancyShimmerImage(
+                imageUrl: widget.product.imageUrl,
+                boxFit: BoxFit.contain,
+                shimmerBaseColor: AppColors.primaryColor.withOpacity(0.25),
+                shimmerHighlightColor: Colors.white,
+                shimmerBackColor: AppColors.primaryColorDark.withOpacity(0.40),
               ),
             ),
             Expanded(
@@ -63,11 +73,11 @@ class _CardCartProductState extends State<CardCartProduct> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Poulets sur pied',
+                    Text(widget.product.name,
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))),
-                    Text('7, 500 FC - 2 Kg',
+                    Text('${widget.product.price} FC / ${widget.product.unit}',
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500))),

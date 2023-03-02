@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../../core/theme/colors.dart';
+import '../../state/cart_state.dart';
 import '../admin_ui/dashboard.dart';
 import 'must_be_connected.dart';
 import 'welcome.dart';
@@ -32,11 +33,17 @@ class _SplashScreenState extends State<SplashScreen> {
     // final isAppUpdated = await _checkAppVersion();
     // if (isAppUpdated) {
     // cprint("App is updated");
-    Future.delayed(const Duration(seconds: 1)).then((_) {
+    Future.delayed(const Duration(seconds: 1)).then((_) async {
       var state = Provider.of<AuthState>(context, listen: false);
+      var cartState = Provider.of<CartState>(context, listen: false);
       state.firstTime();
       state.admiMode();
-      state.getCurrentUser();
+      final user = await state.getCurrentUser();
+      if (user != null &&
+          state.appUser != null &&
+          state.authStatus == AuthStatus.LOGGED_IN) {
+        cartState.init(state.appUser!.cart, state.appUser!.favorites);
+      }
     });
     //}
   }

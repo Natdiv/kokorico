@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:kokorico/features/browsing/data/models/product_model.dart';
-import 'package:kokorico/features/browsing/domain/entities/product.dart';
 import '../../../../core/helpers/utility.dart';
 import '../../domain/entities/app_user.dart';
 
@@ -18,8 +16,8 @@ class AppUserModel extends AppUser {
     String? referenceAddress,
     String role = UserRole.USER,
     bool isVerified = false,
-    List<Product> favorites = const [],
-    List<Product> cart = const [],
+    List<Map<String, int>> favorites = const [],
+    List<Map<String, int>> cart = const [],
   }) : super(
             uid: uid,
             name: name,
@@ -42,7 +40,7 @@ class AppUserModel extends AppUser {
     final documentSnapshot = snapshot.data();
 
     if (kDebugMode) {
-      print("FROM FIRESTORE: $documentSnapshot");
+      // print("FROM FIRESTORE: $documentSnapshot");
     }
     return AppUserModel(
       uid: snapshot.id,
@@ -57,11 +55,14 @@ class AppUserModel extends AppUser {
       role: documentSnapshot?['role'] ?? UserRole.USER,
       isVerified: documentSnapshot?['isVerified'] ?? false,
       favorites: (documentSnapshot?['favorites'] as Iterable)
-          .map((e) => ProductModel.fromJson(e))
+          .map((e) => e as Map<String, int>)
           .toList(),
-      cart: (documentSnapshot?['cart'] as Iterable)
-          .map((e) => ProductModel.fromJson(e))
-          .toList(),
+      cart: (documentSnapshot?['cart'] as Iterable).map((e) {
+        // print("CART: $e");
+        String key = e.keys.first;
+        int value = e.values.first.toInt();
+        return {key: value};
+      }).toList(),
     );
   }
 
@@ -82,7 +83,7 @@ class AppUserModel extends AppUser {
       "cart": cart,
     };
 
-    print("TO FIRESTORE: ${data}");
+    // print("TO FIRESTORE: ${data}");
     return data;
   }
 }

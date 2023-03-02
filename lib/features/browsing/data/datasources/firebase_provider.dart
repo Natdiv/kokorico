@@ -72,4 +72,39 @@ class FirestoreDataProvider {
     }
     return querySnapshot;
   }
+
+// Retrieve some products of the cart from firestore
+  Future<List<ProductModel>> getSomeProducts(List<String> list) async {
+    // print("DATA SOURCES: getProducts()");
+    final ref = firebaseFirestore
+        .collection("products")
+        .withConverter(
+          fromFirestore: ProductModel.fromFirestore,
+          toFirestore: (ProductModel product, _) => product.toFirestore(),
+        )
+        .where('id', whereIn: list);
+    final querySnapshot = await ref.get();
+    final products = querySnapshot.docs.map((e) => e.data()).toList();
+    return products;
+  }
+
+  // Update a cart user in the firestore
+  Future<void> updateCart(
+    String uid,
+    List<Map<String, int>> cartRow,
+  ) async {
+    final ref = firebaseFirestore
+        .collection("profiles")
+        .withConverter(
+          fromFirestore: AppUserModel.fromFirestore,
+          toFirestore: (AppUserModel user, _) => user.toFirestore(),
+        )
+        .doc(uid);
+    final querySnapshot = await ref.update({'cart': cartRow});
+
+    if (kDebugMode) {
+      print("Updated cart user: $ref");
+    }
+    return querySnapshot;
+  }
 }

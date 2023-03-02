@@ -1,10 +1,14 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
+import 'package:kokorico/features/browsing/presentation/state/cart_state.dart';
+import 'package:provider/provider.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
-import '../common/widgets/custom_button.dart';
+import '../../controllers/data_controller.dart';
+import '../../state/auth_state.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({super.key, required this.product});
@@ -17,6 +21,7 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   late TextEditingController _quantityController;
+  final DataController _dataController = DataController();
 
   int _quantity = 1;
 
@@ -36,6 +41,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AuthState>(context, listen: false);
+    final cartState = Provider.of<CartState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -79,13 +86,42 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               fontSize: 16, fontWeight: FontWeight.bold))),
                   const Spacer(),
                   IconButton(
+                      onPressed: () {
+                        Map<String, int> cartItem = {
+                          widget.product.id!: _quantity
+                        };
+                        if (cartState.getCart.contains(cartItem)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              snackBar('Produit déjà dans le panier'));
+                          return;
+                        }
+                        // if (state.userId == null) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(snackBar(
+                        //       'Connectez-vous pour ajouter au panier'));
+                        //   print(state.user);
+                        //   return;
+                        // }
+                        cartState.addCart(cartItem);
+                        _dataController
+                            .updateCart(state.userId, cartState.getCart)
+                            .then((value) {
+                          value.fold((failure) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar('Une erreur est survenue'));
+                            print(failure.props.first);
+                          }, (_) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar('Produit ajouté au panier'));
+                            state.getCurrentUser();
+                          });
+                        });
+                      },
+                      icon: const Icon(Icons.add_shopping_cart)),
+                  IconButton(
                       onPressed: () {},
                       icon: const Icon(Icons.favorite_border)),
                   IconButton(
                       onPressed: () {}, icon: const Icon(Icons.share_outlined)),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.add_shopping_cart)),
                 ],
               ),
             ),

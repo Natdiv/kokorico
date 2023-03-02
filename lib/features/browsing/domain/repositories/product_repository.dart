@@ -11,4 +11,6 @@ abstract class ProductRepository {
   Future<Either<Failure, void>> update(
       {required String id, required Product product});
   Future<Either<Failure, void>> delete({required String id});
+
+  Future<Either<Failure, List<Product>>> readSome({required List<String> list});
 }

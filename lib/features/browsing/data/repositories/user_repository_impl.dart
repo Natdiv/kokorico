@@ -63,4 +63,20 @@ class UserRepositoryImplementation implements UserRepository {
       return const Left(NetworkFailure('NetworkFailure'));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateCart(
+      {required String uid, required List<Map<String, int>> cart}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        var result = await firestoreDataProvider.updateCart(uid, cart);
+        return Right(result);
+      } catch (e) {
+        final message = e.toString();
+        return Left(FirebaseFailure(message));
+      }
+    } else {
+      return const Left(NetworkFailure('NetworkFailure'));
+    }
+  }
 }
