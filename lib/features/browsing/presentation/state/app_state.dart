@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/helpers/locator.dart';
 import '../../../../core/helpers/shared_prefrence_helper.dart';
+import '../../../../core/network/network_info.dart';
 
 class AppState extends ChangeNotifier {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -56,5 +57,16 @@ class AppState extends ChangeNotifier {
     await getIt<SharedPreferenceHelper>().setModeAdminStatus(!isModeAdmin);
     notifyListeners();
     rebirth();
+  }
+
+  bool? _hasConnexion;
+  bool get hasConnexion => _hasConnexion!;
+  set hasConnexion(value) {
+    _hasConnexion = value;
+    notifyListeners();
+  }
+
+  Future<bool> checkNetwork() async {
+    return await getIt<NetworkInfo>().isConnected;
   }
 }

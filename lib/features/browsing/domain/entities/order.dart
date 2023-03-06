@@ -3,22 +3,38 @@ import 'package:equatable/equatable.dart';
 class AppOrder extends Equatable {
   String? id;
   final String userId;
+
+  /// Defines the status of the order
+  /// It can be:
+  /// - pending
+  /// - processing
+  /// - completed
+  /// - cancelled
   final String status;
+
+  /// Defines the payment method
+  /// Cash on delivery or online payment
   final String paymentMethod;
+
+  /// Defines the payment status
+  /// Paid or pending
   final String paymentStatus;
-  final String deliveryMethod;
+  // final String deliveryMethod;
   final String deliveryStatus;
   final String deliveryAddress;
-  final String deliveryCity;
-  final String deliveryCountry;
-  final String deliveryPostalCode;
+  final String? referenceAddress;
+  final String? deliveryCity;
+  final String? deliveryCountry;
+  // final String? deliveryPostalCode;
   final String deliveryPhone;
-  final String deliveryEmail;
-  final String deliveryNotes;
-  final String deliveryDate;
-  final String deliveryTime;
-  final String deliveryPrice;
-  final String totalPrice;
+  final String paymentPhone;
+  final String? deliveryEmail;
+  final String? deliveryNotes;
+  final int deliveryDate;
+
+  /// [deliveryPrice] represent the sum of total price with the delivery fees
+  final double deliveryPrice;
+  final double totalPrice;
   final List<Map<String, int>> products;
   final int createdAt;
   final int updatedAt;
@@ -29,17 +45,16 @@ class AppOrder extends Equatable {
     required this.status,
     required this.paymentMethod,
     required this.paymentStatus,
-    required this.deliveryMethod,
     required this.deliveryStatus,
     required this.deliveryAddress,
+    required this.referenceAddress,
     required this.deliveryCity,
     required this.deliveryCountry,
-    required this.deliveryPostalCode,
     required this.deliveryPhone,
+    required this.paymentPhone,
     required this.deliveryEmail,
     required this.deliveryNotes,
     required this.deliveryDate,
-    required this.deliveryTime,
     required this.deliveryPrice,
     required this.totalPrice,
     required this.products,
@@ -58,17 +73,16 @@ class AppOrder extends Equatable {
         status,
         paymentMethod,
         paymentStatus,
-        deliveryMethod,
         deliveryStatus,
         deliveryAddress,
+        referenceAddress,
         deliveryCity,
         deliveryCountry,
-        deliveryPostalCode,
         deliveryPhone,
+        paymentPhone,
         deliveryEmail,
         deliveryNotes,
         deliveryDate,
-        deliveryTime,
         deliveryPrice,
         totalPrice,
         products,

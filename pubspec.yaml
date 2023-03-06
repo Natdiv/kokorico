@@ -44,6 +44,8 @@ dependencies:
   file_picker: ^5.2.5
   vibration: ^1.7.6
   fancy_shimmer_image: ^2.0.2
+  data_table_2: ^2.3.12
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

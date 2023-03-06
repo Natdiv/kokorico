@@ -1,10 +1,12 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import 'package:kokorico/features/browsing/presentation/state/cart_state.dart';
 import 'package:provider/provider.dart';
+import '../../../../../core/helpers/routes.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../../../core/const.dart';
 import '../../controllers/data_controller.dart';
@@ -24,6 +26,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   final DataController _dataController = DataController();
 
   late int _quantity;
+
+  var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
 
   @override
   initState() {
@@ -96,8 +100,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         };
 
                         var isUpdate = cartState.isInCart(cartItem.keys.first);
+                        print('isUpdate: $isUpdate');
+                        print('cartItem: $cartItem');
 
                         cartState.addCart(cartItem);
+                        print('cartState: ${cartState.getCart}');
                         _dataController
                             .updateCart(state.userId, cartState.getCart)
                             .then((value) {
@@ -114,9 +121,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           });
                         });
                       },
-                      icon: Icon((cartState.isInCart(widget.product.id!))
-                          ? Icons.remove_shopping_cart
-                          : Icons.add_shopping_cart)),
+                      icon: Icon(Icons.add_shopping_cart_outlined)),
                   IconButton(
                       onPressed: () {},
                       icon: const Icon(Icons.favorite_border)),
@@ -139,7 +144,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
             verticalSpacer(height: 16),
-            _buildItemDetials('Prix', '${widget.product.price} FC'),
+            _buildItemDetials('Prix', '${f.format(widget.product.price)} FC'),
             _buildItemDetials('Unité', widget.product.unit),
             _buildItemDetials(
                 'Disponible', widget.product.isAvailable ? 'Oui' : 'Non'),
@@ -150,14 +155,26 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
       bottomNavigationBar: Container(
         height: 60,
-        color: AppColors.primaryColor,
-        child: Center(
-            child: Text('Passer la commande',
-                style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500)))),
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(
+          color: AppColors.primaryColor,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              Routes.goTo(context, '/order',
+                  args: [false, widget.product, _quantity]);
+            },
+            child: Center(
+                child: Text('Passer la commande',
+                    style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)))),
+          ),
+        ),
       ),
     );
   }

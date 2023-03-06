@@ -40,7 +40,9 @@ class _HomePageState extends State<HomePage> {
                 Icons.search,
                 color: AppColors.primaryColorDark,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Routes.goTo(context, '/search');
+              },
             ),
           ],
         ),

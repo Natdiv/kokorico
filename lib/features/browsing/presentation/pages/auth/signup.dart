@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/core/helpers/routes.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../state/auth_state.dart';
@@ -243,7 +244,7 @@ class _SignupPageState extends State<SignupPage> {
                           text: 'Se connecter',
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // Navigator.push(context, MaterialPageRoute(builder: (context) => const SigninPage()));
+                              Routes.goTo(context, '/signin');
                             },
                           style: GoogleFonts.poppins(
                               textStyle: const TextStyle(

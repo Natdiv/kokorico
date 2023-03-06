@@ -4,6 +4,7 @@ import '../../../../../core/theme/colors.dart';
 import '../../state/cart_state.dart';
 import '../admin_ui/dashboard.dart';
 import 'must_be_connected.dart';
+import 'no_internet.dart';
 import 'welcome.dart';
 import 'package:provider/provider.dart';
 
@@ -33,9 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
     // final isAppUpdated = await _checkAppVersion();
     // if (isAppUpdated) {
     // cprint("App is updated");
-    Future.delayed(const Duration(seconds: 1)).then((_) async {
+    Future.delayed(const Duration(seconds: 2)).then((_) async {
       var state = Provider.of<AuthState>(context, listen: false);
       var cartState = Provider.of<CartState>(context, listen: false);
+      if (!(await state.checkNetwork())) {
+        state.hasConnexion = false;
+        return;
+      }
+      state.hasConnexion = true;
       state.firstTime();
       state.admiMode();
       final user = await state.getCurrentUser();
@@ -50,7 +56,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var state = Provider.of<AuthState>(context);
+    var state = Provider.of<AuthState>(context, listen: false);
+
+    if (!state.hasConnexion) {
+      return const NoInternetConnexion();
+    }
 
     if (state.authStatus == AuthStatus.NOT_DETERMINED) {
       return _body();

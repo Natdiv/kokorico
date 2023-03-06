@@ -17,3 +17,26 @@ enum FisrtTime {
 enum ModeAdmin {
   MODE_ADMIN,
 }
+
+// States for order
+enum OrderStatus {
+  PENDING,
+  PROCESSING,
+  COMPLETED,
+  CANCELLED,
+}
+
+enum PaymentMethod {
+  CASH,
+  MOBILE_MONEY,
+}
+
+enum PaymentStatus {
+  PENDING,
+  PAID,
+}
+
+enum DeliveryStatus {
+  PENDING,
+  DELIVERED,
+}

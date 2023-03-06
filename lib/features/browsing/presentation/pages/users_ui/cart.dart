@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:kokorico/core/helpers/routes.dart';
 import 'package:kokorico/features/browsing/presentation/pages/common/widgets/shimmer_list.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +22,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   final DataController _dataController = DataController();
+  var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
   @override
   Widget build(BuildContext context) {
     var cartState = Provider.of<CartState>(context, listen: false);
@@ -153,7 +156,7 @@ class _CartPageState extends State<CartPage> {
                                 if (snapshot.hasData) {
                                   double total = cartState.getTotalPrice(
                                       snapshot.data!.fold((l) => [], (r) => r));
-                                  return Text('$total FC',
+                                  return Text('${f.format((total.round()))} FC',
                                       style: GoogleFonts.poppins(
                                           textStyle: const TextStyle(
                                               color: Colors.white,
@@ -181,12 +184,14 @@ class _CartPageState extends State<CartPage> {
                 ),
                 child: Material(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Routes.goTo(context, '/order', args: [true]);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32, vertical: 8),
                       child: Center(
-                        child: Text('Payer',
+                        child: Text('Passer la commande',
                             style: GoogleFonts.poppins(
                                 textStyle: const TextStyle(
                                     color: AppColors.primaryColor,

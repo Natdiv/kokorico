@@ -143,7 +143,7 @@ class _SigninPageState extends State<SigninPage> {
                           text: 'Créer un compte',
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // Navigator.push(context, MaterialPageRoute(builder: (context) => const SigninPage()));
+                              Routes.goTo(context, '/signup');
                             },
                           style: GoogleFonts.poppins(
                               textStyle: const TextStyle(

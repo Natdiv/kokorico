@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kokorico/core/helpers/utility.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/const.dart';
@@ -71,36 +72,37 @@ class _ProfilePageState extends State<ProfilePage> {
                 // const Spacer(),
                 verticalSpacer(height: 32),
 
-                Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.cardColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: ListTile(
-                    title: Text('Le mode admin',
-                        style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                                color: AppColors.primaryColorDark,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500))),
-                    horizontalTitleGap: 0,
-                    splashColor: AppColors.primaryColorDark,
-                    leading: const Icon(
-                      Icons.admin_panel_settings,
-                      color: AppColors.primaryColorDark,
+                if (state.appUser!.role != UserRole.USER)
+                  Container(
+                    decoration: BoxDecoration(
+                        color: AppColors.cardColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      title: Text('Le mode admin',
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                  color: AppColors.primaryColorDark,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500))),
+                      horizontalTitleGap: 0,
+                      splashColor: AppColors.primaryColorDark,
+                      leading: const Icon(
+                        Icons.admin_panel_settings,
+                        color: AppColors.primaryColorDark,
+                      ),
+                      trailing: Switch(
+                        value: state.isModeAdmin,
+                        onChanged: (value) {},
+                      ),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      onTap: () {
+                        state.setAdmiMode(() {
+                          Phoenix.rebirth(context);
+                        });
+                      },
                     ),
-                    trailing: Switch(
-                      value: state.isModeAdmin,
-                      onChanged: (value) {},
-                    ),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    onTap: () {
-                      state.setAdmiMode(() {
-                        Phoenix.rebirth(context);
-                      });
-                    },
                   ),
-                ),
                 verticalSpacer(height: 8),
                 Container(
                     decoration: BoxDecoration(

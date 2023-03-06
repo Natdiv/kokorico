@@ -16,22 +16,26 @@ class CartState extends AuthState {
 
   /// Adds a product to the cart
   addCart(Map<String, int> cartRow) {
-    (_cart.contains(cartRow))
-        ? _cart[_cart.indexOf(cartRow)]
-            .update(cartRow.keys.first, (value) => value + 1)
-        : _cart.add(cartRow);
+    for (var i = 0; i < _cart.length; i++) {
+      if (_cart[i].keys.first == cartRow.keys.first) {
+        _cart[i].update(cartRow.keys.first, (value) => cartRow.values.first);
+        notifyListeners();
+        return;
+      }
+    }
+    _cart.add(cartRow);
     notifyListeners();
   }
 
   /// Update a product quantity in the cart
-  updateCart(String id, int quantity) {
-    for (var i = 0; i < _cart.length; i++) {
-      if (_cart[i].keys.first == id) {
-        _cart[i].update(id, (value) => quantity);
-      }
-    }
-    notifyListeners();
-  }
+  // updateCart(String id, int quantity) {
+  //   for (var i = 0; i < _cart.length; i++) {
+  //     if (_cart[i].keys.first == id) {
+  //       _cart[i].update(id, (value) => quantity);
+  //     }
+  //   }
+  //   // notifyListeners();
+  // }
 
   /// Checks if a product is in the cart
   bool isInCart(String id) {
@@ -75,11 +79,10 @@ class CartState extends AuthState {
   /// if the cart is not empty
   double getTotalPrice(List<Product> products) {
     var totalPrice = 0.0;
-    if (_cart.isNotEmpty) {
-      for (var element in _cart) {
-        var id = element.keys.first;
-        var quantity = element.values.first;
-        var product = products.firstWhere((element) => element.id == id);
+    if (products.isNotEmpty) {
+      for (var product in products) {
+        var id = product.id;
+        var quantity = getQuantity(id!);
         totalPrice += product.price * quantity;
       }
     }

@@ -53,12 +53,13 @@ SnackBar snackBar(String message) => SnackBar(
                 fontSize: 14,
                 fontWeight: FontWeight.w500)),
       ),
-      backgroundColor: AppColors.secondaryColor,
+      backgroundColor: Colors.black.withOpacity(0.75),
       showCloseIcon: true,
       closeIconColor: Colors.white,
       duration: const Duration(milliseconds: 5000),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-      behavior: SnackBarBehavior.floating,
+      behavior: SnackBarBehavior.fixed,
+      dismissDirection: DismissDirection.up,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(16),

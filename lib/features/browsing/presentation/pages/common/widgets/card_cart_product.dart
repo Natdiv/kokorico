@@ -1,6 +1,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,8 @@ class _CardCartProductState extends State<CardCartProduct> {
   final DataController _dataController = DataController();
   late TextEditingController _quantityController;
   late int _quantity;
+
+  var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
 
   @override
   initState() {
@@ -94,7 +97,8 @@ class _CardCartProductState extends State<CardCartProduct> {
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))),
-                    Text('${widget.product.price} FC / ${widget.product.unit}',
+                    Text(
+                        '${f.format(widget.product.price.round())} FC / ${widget.product.unit}',
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500))),
@@ -158,7 +162,7 @@ class _CardCartProductState extends State<CardCartProduct> {
                   setState(() {
                     _quantity--;
                     _quantityController.text = _quantity.toString();
-                    cartState.updateCart(widget.product.id!, _quantity);
+                    cartState.addCart({widget.product.id!: _quantity});
                     _dataController.updateCart(
                         authState.userId, cartState.getCart);
                   });
@@ -180,7 +184,7 @@ class _CardCartProductState extends State<CardCartProduct> {
                 ),
               ),
               SizedBox(
-                width: 40,
+                width: 60,
                 child: TextFormField(
                   controller: _quantityController,
                   keyboardType: TextInputType.number,
@@ -198,7 +202,7 @@ class _CardCartProductState extends State<CardCartProduct> {
                     }
                     setState(() {
                       _quantity = int.parse(value);
-                      cartState.updateCart(widget.product.id!, _quantity);
+                      cartState.addCart({widget.product.id!: _quantity});
                       _dataController.updateCart(
                           authState.userId, cartState.getCart);
                     });
@@ -220,7 +224,7 @@ class _CardCartProductState extends State<CardCartProduct> {
                   setState(() {
                     _quantity++;
                     _quantityController.text = _quantity.toString();
-                    cartState.updateCart(widget.product.id!, _quantity);
+                    cartState.addCart({widget.product.id!: _quantity});
                     _dataController.updateCart(
                         authState.userId, cartState.getCart);
                   });

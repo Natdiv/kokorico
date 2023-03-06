@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kokorico/features/browsing/presentation/pages/users_ui/order.dart';
+import 'package:kokorico/features/browsing/presentation/pages/users_ui/search.dart';
 import '../../features/browsing/data/models/product_model.dart';
 import '../../features/browsing/presentation/pages/admin_ui/all_orders.dart';
 import '../../features/browsing/presentation/pages/admin_ui/dashboard.dart';
@@ -9,9 +11,11 @@ import '../../features/browsing/presentation/pages/auth/signin.dart';
 import '../../features/browsing/presentation/pages/auth/signup.dart';
 import '../../features/browsing/presentation/pages/common/access_denied_page.dart';
 import '../../features/browsing/presentation/pages/users_ui/cart.dart';
+import '../../features/browsing/presentation/pages/users_ui/confirm_adress.dart';
 import '../../features/browsing/presentation/pages/users_ui/delivery.dart';
 import '../../features/browsing/presentation/pages/users_ui/home.dart';
 import '../../features/browsing/presentation/pages/users_ui/notifications.dart';
+import '../../features/browsing/presentation/pages/users_ui/payment.dart';
 import '../../features/browsing/presentation/pages/users_ui/product_details.dart';
 import '../../features/browsing/presentation/pages/users_ui/profil.dart';
 import '../../features/browsing/presentation/pages/common/must_be_connected.dart';
@@ -76,7 +80,25 @@ class Routes {
         );
       case '/cart':
         return MaterialPageRoute(
-          builder: (context) => const CartPage(),
+          builder: (context) => (mustBeLoggedIn(context))
+              ? const CartPage()
+              : const MustBeConnectedPage(),
+        );
+
+      case '/order':
+        final args = settings.arguments as List;
+        bool isFromCart = args[0] as bool;
+        return MaterialPageRoute(
+          builder: (context) => (mustBeLoggedIn(context))
+              ? (isFromCart)
+                  ? OrderPage(
+                      isFromCart: isFromCart,
+                    )
+                  : OrderPage(
+                      isFromCart: isFromCart,
+                      product: args[1] as ProductModel,
+                      quantity: args[2] as int)
+              : const MustBeConnectedPage(),
         );
       case '/notifications':
         return MaterialPageRoute(
@@ -90,11 +112,27 @@ class Routes {
               ? const DeliveryPage()
               : const MustBeConnectedPage(),
         );
+      case '/confirmation-address':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeLoggedIn(context))
+              ? const ConfirmationAddressPage()
+              : const MustBeConnectedPage(),
+        );
+      case '/payment':
+        return MaterialPageRoute(
+          builder: (context) => (mustBeLoggedIn(context))
+              ? const PaymentPage()
+              : const MustBeConnectedPage(),
+        );
       case '/profile':
         return MaterialPageRoute(
           builder: (context) => (mustBeLoggedIn(context))
               ? const ProfilePage()
               : const MustBeConnectedPage(),
+        );
+      case '/search':
+        return MaterialPageRoute(
+          builder: (context) => const SearchPage(),
         );
       case '/signin':
         return MaterialPageRoute(

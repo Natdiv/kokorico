@@ -10,6 +10,7 @@ import 'core/theme/theme.dart';
 import 'features/browsing/presentation/state/app_state.dart';
 import 'features/browsing/presentation/state/auth_state.dart';
 import 'features/browsing/presentation/state/cart_state.dart';
+import 'features/browsing/presentation/state/order_state.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -32,7 +33,8 @@ class KokoricoApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AppState>(create: (_) => AppState()),
         ChangeNotifierProvider<AuthState>(create: (_) => AuthState()),
-        ChangeNotifierProvider<CartState>(create: (_) => CartState())
+        ChangeNotifierProvider<CartState>(create: (_) => CartState()),
+        ChangeNotifierProvider<OrderState>(create: (_) => OrderState())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

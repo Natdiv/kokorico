@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "894893018049-bc13gsr3288ckk842uqbqddhpg6uupvb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "goomy.tech.kokorico",
+            "certificate_hash": "cdb36a5dfb20821899c19258e2ae6ec2f34f7407"
+          }
+        },
+        {
           "client_id": "894893018049-9v8gdkbd0vjpmeei1c6npcpbeil1masm.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "894893018049-9v8gdkbd0vjpmeei1c6npcpbeil1masm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "894893018049-f4lb7t70h5pi28fq01efvh7hcsndjvq9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "goomy.tech.kokorico"
+              }
             }
           ]
         }
