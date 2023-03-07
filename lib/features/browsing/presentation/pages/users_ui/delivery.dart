@@ -109,23 +109,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buidCardItem('Commande N°', data.id!),
+                      _buidCardItem('Commande ', data.id!),
                       _cardDivder(),
                       _buidCardItem('Date', getFormattedDate(data.createdAt)),
                       _cardDivder(),
                       _buidCardItem(
                           'Montant', getFormattedPrice(data.totalPrice)),
                       _cardDivder(),
-                      _buidCardItem('Status', getOrderStatus(data.status)),
-                      _cardDivder(),
-                      _buidCardItem('Adresse', data.deliveryAddress),
-                      _cardDivder(),
-                      _buidCardItem('Téléphone', data.deliveryPhone),
-                      _cardDivder(),
-                      _buidCardItem('Mode de paiement',
-                          getPaymentMethod(data.paymentMethod)),
-                      _cardDivder(),
-                      _buidCardItem('Téléphone', data.deliveryPhone),
+                      _buidCardItem('Status', getOrderStatus(data.status))
                     ]))),
       ),
     );
@@ -139,21 +130,21 @@ class _DeliveryPageState extends State<DeliveryPage> {
             style: GoogleFonts.poppins(
                 textStyle: const TextStyle(
                     color: AppColors.primaryColorDark,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold))),
         Text(value,
             style: GoogleFonts.poppins(
                 textStyle: const TextStyle(
                     color: AppColors.primaryColorDark,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold))),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500))),
       ],
     );
   }
 
   Widget _cardDivder() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Divider(
         thickness: 1,
         color: AppColors.primaryColorDark.withOpacity(0.25),

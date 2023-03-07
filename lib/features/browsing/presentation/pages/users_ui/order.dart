@@ -53,125 +53,125 @@ class OrderPage extends StatelessWidget {
             color: AppColors.primaryColorDark,
             icon: const Icon(Icons.arrow_back_ios)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder(
-            future: (isFromCart)
-                ? _dataController.getCart(cartState.getCart)
-                : _dataController.getCart([
-                    {product!.id!: quantity!}
-                  ]),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const ShimmerList();
-              } else {
-                if (snapshot.hasError) {
-                  print('Has Error');
+      body: FutureBuilder(
+          future: (isFromCart)
+              ? _dataController.getCart(cartState.getCart)
+              : _dataController.getCart([
+                  {product!.id!: quantity!}
+                ]),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const ShimmerList();
+            } else {
+              if (snapshot.hasError) {
+                print('Has Error');
+                return const EmptyWidget(
+                  message: 'Une erreur est survenue',
+                  imageSrc: 'assets/images/cancel.svg',
+                );
+              } else if (snapshot.data == null) {
+                print('Has No Data');
+                return const EmptyWidget(
+                  message: 'Votre panier est vide',
+                  imageSrc: 'assets/images/empty_cart.svg',
+                );
+              }
+              final result = snapshot.data;
+              return result!.fold((failure) {
+                return EmptyWidget(
+                  message: failure.props.first.toString(),
+                  imageSrc: 'assets/images/cancel.svg',
+                );
+              }, (data) {
+                if (data.isEmpty) {
                   return const EmptyWidget(
-                    message: 'Une erreur est survenue',
-                    imageSrc: 'assets/images/cancel.svg',
-                  );
-                } else if (snapshot.data == null) {
-                  print('Has No Data');
-                  return const EmptyWidget(
-                    message: 'Votre panier est vide',
+                    message: 'Vous n\'avez aucune commande',
                     imageSrc: 'assets/images/empty_cart.svg',
                   );
                 }
-                final result = snapshot.data;
-                return result!.fold((failure) {
-                  return EmptyWidget(
-                    message: failure.props.first.toString(),
-                    imageSrc: 'assets/images/cancel.svg',
-                  );
-                }, (data) {
-                  if (data.isEmpty) {
-                    return const EmptyWidget(
-                      message: 'Vous n\'avez aucune commande',
-                      imageSrc: 'assets/images/empty_cart.svg',
-                    );
-                  }
-                  return _mainBody(context, data as List<ProductModel>);
-                });
-              }
-            }),
-      ),
+                return _mainBody(context, data as List<ProductModel>);
+              });
+            }
+          }),
     );
   }
 
   Widget _mainBody(BuildContext context, List<ProductModel> data) {
     var cartState = Provider.of<CartState>(context, listen: false);
-    return Column(
-      children: [
-        Expanded(
-          // fit: FlexFit.tight,
-          // height: size(context).height * 0.75,
-          child: DataTable2(
-            // columnSpacing: defaultPadding,
-            // minWidth: 600,
-            smRatio: 0.5,
-            lmRatio: 2,
-            columnSpacing: 0,
-            horizontalMargin: 0,
-            columns: [
-              DataColumn2(
-                label: Text("No", style: titleStyle),
-                size: ColumnSize.S,
-              ),
-              DataColumn2(
-                label: Text("Produit", style: titleStyle),
-              ),
-              DataColumn2(
-                  label: Center(child: Text("Prix (FC)", style: titleStyle)),
-                  numeric: true),
-              DataColumn2(
-                  label: Center(child: Text("Qté", style: titleStyle)),
-                  numeric: true),
-              DataColumn2(
-                  label: Center(child: Text("Total", style: titleStyle)),
-                  numeric: true),
-            ],
-            rows: List.generate(
-              data.length,
-              (index) {
-                int qty = (isFromCart)
-                    ? cartState.getQuantity(data[index].id!)
-                    : quantity!;
-                orderProducts!.add({data[index].id!: qty});
-                totalPrice += data[index].price * qty;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Expanded(
+            // fit: FlexFit.tight,
+            // height: size(context).height * 0.75,
+            child: DataTable2(
+              // columnSpacing: defaultPadding,
+              // minWidth: 600,
+              smRatio: 0.5,
+              lmRatio: 2,
+              columnSpacing: 0,
+              horizontalMargin: 0,
+              columns: [
+                DataColumn2(
+                  label: Text("No", style: titleStyle),
+                  size: ColumnSize.S,
+                ),
+                DataColumn2(
+                  label: Text("Produit", style: titleStyle),
+                ),
+                DataColumn2(
+                    label: Center(child: Text("Prix (FC)", style: titleStyle)),
+                    numeric: true),
+                DataColumn2(
+                    label: Center(child: Text("Qté", style: titleStyle)),
+                    numeric: true),
+                DataColumn2(
+                    label: Center(child: Text("Total", style: titleStyle)),
+                    numeric: true),
+              ],
+              rows: List.generate(
+                data.length,
+                (index) {
+                  int qty = (isFromCart)
+                      ? cartState.getQuantity(data[index].id!)
+                      : quantity!;
+                  orderProducts!.add({data[index].id!: qty});
+                  totalPrice += data[index].price * qty;
 
-                return orderDataRow(context, data[index], qty, index + 1);
-              },
+                  return orderDataRow(context, data[index], qty, index + 1);
+                },
+              ),
             ),
           ),
-        ),
-        Spacer(),
-        Divider(
-          thickness: 1,
-          color: AppColors.primaryColorDark.withOpacity(0.25),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('Total', style: titleStyle.copyWith(fontSize: 20)),
-            Text(
-              (isFromCart)
-                  ? getFormattedPrice(cartState.getTotalPrice(data))
-                  : getFormattedPrice(product!.price * quantity!),
-              style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
-            ),
-          ],
-        ),
-        Divider(
-          thickness: 1,
-          color: AppColors.primaryColorDark.withOpacity(0.25),
-        ),
-        verticalSpacer(height: 16),
-        roundedButton(context),
-        Spacer()
-      ],
+          Spacer(),
+          Divider(
+            thickness: 1,
+            color: AppColors.primaryColorDark.withOpacity(0.25),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('Total', style: titleStyle.copyWith(fontSize: 20)),
+              Text(
+                (isFromCart)
+                    ? getFormattedPrice(cartState.getTotalPrice(data))
+                    : getFormattedPrice(product!.price * quantity!),
+                style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+          Divider(
+            thickness: 1,
+            color: AppColors.primaryColorDark.withOpacity(0.25),
+          ),
+          verticalSpacer(height: 16),
+          roundedButton(context),
+          Spacer()
+        ],
+      ),
     );
   }
 

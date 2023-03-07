@@ -5,17 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/core/const.dart';
+import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/orders_model.dart';
-import 'package:kokorico/features/browsing/data/models/payment_model.dart';
-import 'package:kokorico/features/browsing/domain/usescases/create_order.dart';
 import 'package:kokorico/features/browsing/presentation/pages/common/loading_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/helpers/enum.dart';
 import '../../../../../core/helpers/locator.dart';
-import '../../../../../core/helpers/routes.dart';
-import '../../../../../core/helpers/utility.dart';
 import '../../../../../core/theme/colors.dart';
+import '../../../data/models/payment_model.dart';
+import '../../../domain/usescases/create_order.dart';
 import '../../controllers/data_controller.dart';
 import '../../state/auth_state.dart';
 import '../../state/order_state.dart';
@@ -29,17 +28,16 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   late TextEditingController _phoneController;
-  final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
   String errorText = '';
   DataController dataController = DataController();
+  CreateOrder createOrder = getIt<CreateOrder>();
 
   @override
   void initState() {
     super.initState();
     _phoneController = TextEditingController();
-    focusNode.requestFocus();
   }
 
   @override
@@ -223,12 +221,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     text: 'Continuer',
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        orderState.paymentMethod =
-                                            PaymentMethod.CASH.toString();
-
-                                        /// To add if payment is no online payment
-                                        /// orderState.paymentPhone = '';
-                                        // orderState.paymentStatus = PaymentStatus.PENDING.toString();
+                                        _saveOrder();
                                       },
                                     style: GoogleFonts.poppins(
                                         textStyle: const TextStyle(
@@ -277,7 +270,6 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
           Expanded(
             child: TextFormField(
-              focusNode: focusNode,
               controller: _phoneController,
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.phone,
@@ -299,7 +291,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  _makePayment() {
+  _makePayment() async {
     final authState = Provider.of<AuthState>(context, listen: false);
     final orderState = Provider.of<OrderState>(context, listen: false);
     var phone = _phoneController.text.trim();
@@ -321,6 +313,7 @@ class _PaymentPageState extends State<PaymentPage> {
       authState.isBusy = true;
       orderState.paymentPhone = '+243$phone';
       orderState.paymentMethod = PaymentMethod.MOBILE_MONEY.toString();
+      orderState.paymentStatus = PaymentStatus.PENDING.toString();
 
       setState(() {
         errorText = '';
@@ -329,44 +322,28 @@ class _PaymentPageState extends State<PaymentPage> {
       /// Here you can make your payment
       print('${orderState.paymentPhone}, ${orderState.totalPrice}');
 
-      var payment = PaymentModel(
-          orderId: 'orderId',
-          userId: 'userId',
-          paymentMethod: 'paymentMethod',
-          paymentStatus: 'paymentStatus',
-          paymentDate: 1,
-          paymentAmount: 0,
-          paymentCustomerPhone: 'paymentCustomerPhone');
+      // Request API for payment
+      var res = await dataController.makeMobilePayment(fillOrder());
+      print('Response from payment API: $res');
+      authState.isBusy = false;
+      print('App State: ${authState.isbusy}');
+      res.fold((l) {
+        print('Unsuccessful payment: ${l.props.first}');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar('L\'opération a rencontré un problème'));
+      }, (r) {
+        print('Successful payment: $r');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(snackBar('Votre commande a été enregistrée'));
 
-      dataController.makeMobilePayment(payment).then((value) {
-        print(value);
-        authState.isBusy = false;
-        value.fold((l) {}, (r) async {
-          /// Here we must check if payment is successful
-          /// if payment was successful, we must update the order status to PAID
-          /// else we must update the order status to PENDING
-          /// r is the response from the payment gateway
-          orderState.paymentStatus = PaymentStatus.PAID.toString();
-
-          CreateOrder createOrder = getIt<CreateOrder>();
-          (await createOrder(fillOrder())).fold((failure) {
-            // state.isBusy = false;
-            ScaffoldMessenger.of(context)
-                .showSnackBar(snackBar('Commande non enregistrée'));
-          }, (success) {
-            // state.isBusy = false;
-            ScaffoldMessenger.of(context)
-                .showSnackBar(snackBar('Votre commande a été enregistrée'));
-
-            Timer(const Duration(milliseconds: 5000), () {
-              Routes.pushReplacement(context, '/delivery');
-            });
-          });
-        });
-      }).catchError((onError) {
-        print('on catchError: $onError');
-        authState.isBusy = false;
+        // Timer(const Duration(milliseconds: 5000), () {
+        //   Routes.pushReplacement(context, '/delivery');
+        // });
       });
+      // }).catchError((onError) {
+      //   print('on catchError: $onError');
+      //   authState.isBusy = false;
+      // });
     }
   }
 
@@ -394,5 +371,35 @@ class _PaymentPageState extends State<PaymentPage> {
         products: orderState.products!,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         updatedAt: DateTime.now().millisecondsSinceEpoch);
+  }
+
+  void _saveOrder() async {
+    final authState = Provider.of<AuthState>(context, listen: false);
+    final orderState = Provider.of<OrderState>(context, listen: false);
+    authState.isBusy = true;
+
+    orderState.paymentMethod = PaymentMethod.CASH.toString();
+    orderState.paymentPhone = '';
+    orderState.paymentStatus = PaymentStatus.PENDING.toString();
+
+    // Request API for payment
+    var res = await createOrder(fillOrder());
+    print('Response from payment API: $res');
+
+    authState.isBusy = false;
+    print('App State: ${authState.isbusy}');
+    res.fold((l) {
+      print('Unsuccessful payment: ${l.props.first}');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackBar('L\'opération a rencontré un problème'));
+    }, (r) {
+      print('Successful payment: $r');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackBar('Votre commande a été enregistrée'));
+
+      // Timer(const Duration(milliseconds: 5000), () {
+      //   Routes.pushReplacement(context, '/delivery');
+      // });
+    });
   }
 }

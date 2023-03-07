@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 _buildCardInfo(
                     title: 'Numero',
                     value: state.appUser!.phoneNumber,
-                    icon: Icons.phone),
+                    icon: Icons.phone_outlined),
                 _buildCardInfo(
                     title: 'Email',
                     value: state.appUser!.email,
@@ -63,11 +63,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 _buildCardInfo(
                     title: 'Adresse de livraison',
                     value: state.appUser!.address,
-                    icon: Icons.home),
+                    icon: Icons.home_outlined),
                 _buildCardInfo(
                     title: 'Référence',
                     value: state.appUser!.referenceAddress ?? 'Non renseigné',
-                    icon: Icons.help),
+                    icon: Icons.help_outline_outlined),
                 // const Spacer(),
                 verticalSpacer(height: 32),
 

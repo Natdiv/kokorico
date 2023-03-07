@@ -16,7 +16,7 @@ class OrderRepositoryImplementation implements OrderRepository {
       {required this.firestoreDataProvider, required this.networkInfo});
 
   @override
-  Future<Either<Failure, void>> create({required AppOrder order}) async {
+  Future<Either<Failure, AppOrder>> create({required AppOrder order}) async {
     if (await networkInfo.isConnected) {
       try {
         var result =

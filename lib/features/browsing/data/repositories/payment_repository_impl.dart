@@ -1,12 +1,13 @@
-import 'package:kokorico/features/browsing/data/models/payment_model.dart';
 import 'package:kokorico/features/browsing/domain/entities/payment.dart';
 import 'package:kokorico/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:kokorico/features/browsing/domain/repositories/payment_repository.dart';
 
 import '../../../../core/network/network_info.dart';
+import '../../domain/entities/order.dart';
 import '../datasources/firebase_provider.dart';
 import '../datasources/functions_provider.dart';
+import '../models/orders_model.dart';
 
 class PaymentRepositoryImplementation implements PaymentRepository {
   final FirestoreDataProvider firestoreDataProvider;
@@ -44,11 +45,11 @@ class PaymentRepositoryImplementation implements PaymentRepository {
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> requestApi(
-      {required Payment payment}) async {
+      {required AppOrder appOrder}) async {
     if (await networkInfo.isConnected) {
       try {
         var result =
-            await functionsProvider.payWithMobileMoney(payment as PaymentModel);
+            await functionsProvider.payWithMobileMoney(appOrder as OrderModel);
         return Right(result);
       } catch (e) {
         final message = e.toString();

@@ -39,7 +39,6 @@ class _ConfirmationAddressPageState extends State<ConfirmationAddressPage> {
           padding: const EdgeInsets.all(16),
           child: Column(children: [
             _buildCurrentAddressWidget(),
-            verticalSpacer(height: 16),
             // Pour la geolocation
             // _buidPositionAcuelleWidget()
             Padding(
@@ -49,7 +48,7 @@ class _ConfirmationAddressPageState extends State<ConfirmationAddressPage> {
                       textStyle: const TextStyle(
                           color: AppColors.primaryColorDark,
                           fontSize: 16,
-                          fontWeight: FontWeight.w400))),
+                          fontWeight: FontWeight.bold))),
             ),
             _buidDifferentAddress()
           ]),

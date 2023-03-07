@@ -52,7 +52,11 @@ class OrderModel extends AppOrder {
       deliveryDate: documentSnapshot['deliveryDate'],
       deliveryPrice: documentSnapshot['deliveryPrice'],
       totalPrice: documentSnapshot['totalPrice'],
-      products: documentSnapshot['products'],
+      products: (documentSnapshot['products'] as Iterable).map((e) {
+        String key = e.keys.first;
+        int value = e.values.first.toInt();
+        return {key: value};
+      }).toList(),
       createdAt: documentSnapshot['createdAt'],
       updatedAt: documentSnapshot['updatedAt'],
     );

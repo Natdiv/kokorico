@@ -5,13 +5,13 @@ import '../../../../core/usecases/usecase.dart';
 import '../entities/order.dart';
 import '../repositories/order_repository.dart';
 
-class CreateOrder implements UseCase<void, AppOrder> {
+class CreateOrder implements UseCase<AppOrder, AppOrder> {
   CreateOrder(this._orderRepository);
 
   final OrderRepository _orderRepository;
 
   @override
-  Future<Either<Failure, void>> call(AppOrder order) async {
+  Future<Either<Failure, AppOrder>> call(AppOrder order) async {
     return await _orderRepository.create(order: order);
   }
 }

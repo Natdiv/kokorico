@@ -43,7 +43,7 @@ class DataController {
 
   /// Makes a mobile payment
   Future<Either<Failure, Map<String, dynamic>>> makeMobilePayment(
-      Payment payment) {
-    return _makeMobilePayment(payment);
+      AppOrder appOrder) {
+    return _makeMobilePayment(appOrder);
   }
 }

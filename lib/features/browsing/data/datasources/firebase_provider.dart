@@ -110,18 +110,18 @@ class FirestoreDataProvider {
   }
 
   /// Create a new order in the firestore
-  Future<void> createOrder(OrderModel orderModel) {
+  Future<OrderModel> createOrder(OrderModel orderModel) async {
     final ref = firebaseFirestore.collection("orders").doc().withConverter(
           fromFirestore: OrderModel.fromFirestore,
           toFirestore: (OrderModel order, _) => order.toFirestore(),
         );
 
     orderModel.setId = ref.id;
-    final querySnapshot = ref.set(orderModel);
+    final querySnapshot = await ref.set(orderModel);
     if (kDebugMode) {
       print("Added order: $ref");
     }
-    return querySnapshot;
+    return orderModel;
   }
 
   /// Retrieve all orders from firestore
