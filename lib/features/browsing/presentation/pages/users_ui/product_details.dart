@@ -1,7 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import 'package:kokorico/features/browsing/presentation/state/cart_state.dart';
@@ -26,8 +25,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   final DataController _dataController = DataController();
 
   late int _quantity;
-
-  var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
 
   @override
   initState() {
@@ -144,7 +141,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
             verticalSpacer(height: 16),
-            _buildItemDetials('Prix', '${f.format(widget.product.price)} FC'),
+            _buildItemDetials('Prix', getFormattedPrice(widget.product.price)),
             _buildItemDetials('Unité', widget.product.unit),
             _buildItemDetials(
                 'Disponible', widget.product.isAvailable ? 'Oui' : 'Non'),

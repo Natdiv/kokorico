@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:kokorico/core/helpers/enum.dart';
 import 'package:vibration/vibration.dart';
 
 import '../theme/colors.dart';
@@ -78,4 +80,34 @@ int getFromTodayDate() {
   int day = DateTime.now().day;
   DateTime time = DateTime(year, month, day);
   return time.millisecondsSinceEpoch;
+}
+
+String getFormattedDate(int date) {
+  DateTime time = DateTime.fromMillisecondsSinceEpoch(date);
+  return '${time.day}/${time.month}/${time.year} - ${time.hour}:${time.minute}';
+}
+
+String getFormattedPrice(double price) {
+  var f =
+      NumberFormat.simpleCurrency(locale: 'fr_FR', name: '', decimalDigits: 0);
+  var value = '${f.format(price)} FC';
+  return value;
+}
+
+String getOrderStatus(String status) {
+  if (status == OrderStatus.PENDING.toString()) {
+    return 'En attente';
+  } else if (status == OrderStatus.PROCESSING.toString()) {
+    return 'En cours';
+  } else if (status == OrderStatus.COMPLETED.toString()) {
+    return 'Livrée';
+  }
+  return 'Annulée';
+}
+
+String getPaymentMethod(String method) {
+  if (PaymentMethod.MOBILE_MONEY.toString() == method) {
+    return 'Mobile Money';
+  }
+  return 'Paiement Cash';
 }

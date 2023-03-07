@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
+import '../entities/payment.dart';
 import '../repositories/payment_repository.dart';
 
 class MakeMobilePayment {
@@ -8,10 +9,7 @@ class MakeMobilePayment {
 
   final PaymentRepository _paymentRepository;
 
-  @override
-  Future<Either<Failure, Map<String, dynamic>>> call(
-      String phoneNumber, double amount) async {
-    return await _paymentRepository.requestApi(
-        phoneNumber: phoneNumber, amount: amount);
+  Future<Either<Failure, Map<String, dynamic>>> call(Payment payment) async {
+    return await _paymentRepository.requestApi(payment: payment);
   }
 }

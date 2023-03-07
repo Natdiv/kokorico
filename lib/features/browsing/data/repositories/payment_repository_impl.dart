@@ -1,3 +1,4 @@
+import 'package:kokorico/features/browsing/data/models/payment_model.dart';
 import 'package:kokorico/features/browsing/domain/entities/payment.dart';
 import 'package:kokorico/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
@@ -43,11 +44,11 @@ class PaymentRepositoryImplementation implements PaymentRepository {
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> requestApi(
-      {required String phoneNumber, required double amount}) async {
+      {required Payment payment}) async {
     if (await networkInfo.isConnected) {
       try {
         var result =
-            await functionsProvider.payWithMobileMoney(phoneNumber, amount);
+            await functionsProvider.payWithMobileMoney(payment as PaymentModel);
         return Right(result);
       } catch (e) {
         final message = e.toString();

@@ -13,7 +13,7 @@ abstract class PaymentRepository {
   Future<Either<Failure, void>> delete({required String id});
 
   Future<Either<Failure, Map<String, dynamic>>> requestApi(
-      {required String phoneNumber, required double amount});
+      {required Payment payment});
 
   // Future<Either<Failure, List<Order>>> readSome({required List<String> list});
 }

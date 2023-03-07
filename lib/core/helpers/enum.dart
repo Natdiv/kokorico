@@ -40,3 +40,9 @@ enum DeliveryStatus {
   PENDING,
   DELIVERED,
 }
+
+enum NetworkStatus {
+  CONNECTED,
+  DISCONNECTED,
+  NOT_DETERMINED,
+}

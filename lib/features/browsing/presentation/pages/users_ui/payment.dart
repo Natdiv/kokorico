@@ -1,13 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kokorico/core/const.dart';
 import 'package:kokorico/features/browsing/data/models/orders_model.dart';
+import 'package:kokorico/features/browsing/data/models/payment_model.dart';
+import 'package:kokorico/features/browsing/domain/usescases/create_order.dart';
 import 'package:kokorico/features/browsing/presentation/pages/common/loading_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/helpers/enum.dart';
+import '../../../../../core/helpers/locator.dart';
+import '../../../../../core/helpers/routes.dart';
+import '../../../../../core/helpers/utility.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../controllers/data_controller.dart';
 import '../../state/auth_state.dart';
@@ -321,18 +328,43 @@ class _PaymentPageState extends State<PaymentPage> {
 
       /// Here you can make your payment
       print('${orderState.paymentPhone}, ${orderState.totalPrice}');
-      dataController
-          .makeMobilePayment('orderState.paymentPhone!', orderState.totalPrice!)
-          .then((value) {
+
+      var payment = PaymentModel(
+          orderId: 'orderId',
+          userId: 'userId',
+          paymentMethod: 'paymentMethod',
+          paymentStatus: 'paymentStatus',
+          paymentDate: 1,
+          paymentAmount: 0,
+          paymentCustomerPhone: 'paymentCustomerPhone');
+
+      dataController.makeMobilePayment(payment).then((value) {
         print(value);
         authState.isBusy = false;
+        value.fold((l) {}, (r) async {
+          /// Here we must check if payment is successful
+          /// if payment was successful, we must update the order status to PAID
+          /// else we must update the order status to PENDING
+          /// r is the response from the payment gateway
+          orderState.paymentStatus = PaymentStatus.PAID.toString();
 
-        /// To add if payment is successfully
-        // orderState.paymentStatus = PaymentStatus.PAID.toString();
-        // Add order to firestore
-        // Route to /orders Page or Success Page
+          CreateOrder createOrder = getIt<CreateOrder>();
+          (await createOrder(fillOrder())).fold((failure) {
+            // state.isBusy = false;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(snackBar('Commande non enregistrée'));
+          }, (success) {
+            // state.isBusy = false;
+            ScaffoldMessenger.of(context)
+                .showSnackBar(snackBar('Votre commande a été enregistrée'));
+
+            Timer(const Duration(milliseconds: 5000), () {
+              Routes.pushReplacement(context, '/delivery');
+            });
+          });
+        });
       }).catchError((onError) {
-        print(onError);
+        print('on catchError: $onError');
         authState.isBusy = false;
       });
     }

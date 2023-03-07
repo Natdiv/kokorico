@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../../../../core/const.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../state/auth_state.dart';
-import '../common/widgets/liste_tile_item.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

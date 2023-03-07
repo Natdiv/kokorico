@@ -1,7 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +26,6 @@ class _CardCartProductState extends State<CardCartProduct> {
   final DataController _dataController = DataController();
   late TextEditingController _quantityController;
   late int _quantity;
-
-  var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
 
   @override
   initState() {
@@ -98,7 +95,7 @@ class _CardCartProductState extends State<CardCartProduct> {
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold))),
                     Text(
-                        '${f.format(widget.product.price.round())} FC / ${widget.product.unit}',
+                        '${getFormattedPrice(widget.product.price)} FC / ${widget.product.unit}',
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500))),

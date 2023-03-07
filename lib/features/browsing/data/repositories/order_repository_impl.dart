@@ -66,4 +66,22 @@ class OrderRepositoryImplementation implements OrderRepository {
     // TODO: implement update
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, List<AppOrder>>> getMyOrders(
+      {required String userId}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        var result = await firestoreDataProvider.getMyOrders(userId);
+        return Right(result);
+      } catch (e) {
+        final message = e.toString();
+        print('Order Repository Implementation: $message');
+        return Left(FirebaseFailure(message));
+      }
+    } else {
+      print('Network Failure');
+      return const Left(NetworkFailure('NetworkFailure'));
+    }
+  }
 }

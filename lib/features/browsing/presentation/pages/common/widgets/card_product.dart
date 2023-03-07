@@ -1,10 +1,10 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../../core/const.dart';
 import '../../../../../../core/helpers/routes.dart';
+import '../../../../../../core/helpers/utility.dart';
 import '../../../../../../core/theme/colors.dart';
 import '../../../../data/models/product_model.dart';
 
@@ -12,8 +12,6 @@ class CardProduct extends StatelessWidget {
   final ProductModel product;
 
   CardProduct({super.key, required this.product});
-
-  var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +74,7 @@ class CardProduct extends StatelessWidget {
                                           fontWeight: FontWeight.w400)),
                                   children: [
                                 TextSpan(
-                                    text: '${f.format(product.price)} FC',
+                                    text: getFormattedPrice(product.price),
                                     style: GoogleFonts.poppins(
                                         textStyle: const TextStyle(
                                             fontSize: 12,

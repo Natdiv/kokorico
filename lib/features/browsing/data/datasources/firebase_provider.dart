@@ -149,4 +149,19 @@ class FirestoreDataProvider {
     final orders = querySnapshot.docs.map((e) => e.data()).toList();
     return orders;
   }
+
+  /// Retrieve all orders for today from firestore
+  Future<List<OrderModel>> getMyOrders(String userId) async {
+    final ref = firebaseFirestore
+        .collection("orders")
+        .withConverter(
+          fromFirestore: OrderModel.fromFirestore,
+          toFirestore: (OrderModel order, _) => order.toFirestore(),
+        )
+        .where('userId', isEqualTo: userId)
+        .orderBy('createdAt', descending: true);
+    final querySnapshot = await ref.get();
+    final orders = querySnapshot.docs.map((e) => e.data()).toList();
+    return orders;
+  }
 }

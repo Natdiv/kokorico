@@ -34,32 +34,35 @@ class _SplashScreenState extends State<SplashScreen> {
     // final isAppUpdated = await _checkAppVersion();
     // if (isAppUpdated) {
     // cprint("App is updated");
-    Future.delayed(const Duration(seconds: 2)).then((_) async {
-      var state = Provider.of<AuthState>(context, listen: false);
-      var cartState = Provider.of<CartState>(context, listen: false);
-      if (!(await state.checkNetwork())) {
-        state.hasConnexion = false;
-        return;
-      }
-      state.hasConnexion = true;
-      state.firstTime();
-      state.admiMode();
-      final user = await state.getCurrentUser();
-      if (user != null &&
-          state.appUser != null &&
-          state.authStatus == AuthStatus.LOGGED_IN) {
-        cartState.init(state.appUser!.cart, state.appUser!.favorites);
-      }
-    });
+    // Future.delayed(const Duration(seconds: 2)).then((_) async {
+    var state = Provider.of<AuthState>(context, listen: false);
+    var cartState = Provider.of<CartState>(context, listen: false);
+    if (!(await state.checkNetwork())) {
+      state.networkStatus = NetworkStatus.DISCONNECTED;
+      return;
+    }
+    state.networkStatus = NetworkStatus.CONNECTED;
+    state.firstTime();
+    state.admiMode();
+    final user = await state.getCurrentUser();
+    if (user != null &&
+        state.appUser != null &&
+        state.authStatus == AuthStatus.LOGGED_IN) {
+      cartState.init(state.appUser!.cart, state.appUser!.favorites);
+    }
+    //}
+    //);
     //}
   }
 
   @override
   Widget build(BuildContext context) {
-    var state = Provider.of<AuthState>(context, listen: false);
+    var state = Provider.of<AuthState>(context);
 
-    if (!state.hasConnexion) {
+    if (state.networkStatus == NetworkStatus.DISCONNECTED) {
       return const NoInternetConnexion();
+    } else if (state.networkStatus == NetworkStatus.NOT_DETERMINED) {
+      return _body();
     }
 
     if (state.authStatus == AuthStatus.NOT_DETERMINED) {

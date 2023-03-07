@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kokorico/features/browsing/domain/entities/order.dart';
 import 'package:kokorico/features/browsing/presentation/pages/users_ui/order.dart';
 import 'package:kokorico/features/browsing/presentation/pages/users_ui/search.dart';
 import '../../features/browsing/data/models/product_model.dart';
@@ -12,6 +13,7 @@ import '../../features/browsing/presentation/pages/auth/signup.dart';
 import '../../features/browsing/presentation/pages/common/access_denied_page.dart';
 import '../../features/browsing/presentation/pages/users_ui/cart.dart';
 import '../../features/browsing/presentation/pages/users_ui/confirm_adress.dart';
+import '../../features/browsing/presentation/pages/users_ui/delivery-details.dart';
 import '../../features/browsing/presentation/pages/users_ui/delivery.dart';
 import '../../features/browsing/presentation/pages/users_ui/home.dart';
 import '../../features/browsing/presentation/pages/users_ui/notifications.dart';
@@ -110,6 +112,15 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => (mustBeLoggedIn(context))
               ? const DeliveryPage()
+              : const MustBeConnectedPage(),
+        );
+      case '/delivery-details':
+        final order = settings.arguments as AppOrder;
+        return MaterialPageRoute(
+          builder: (context) => (mustBeLoggedIn(context))
+              ? DeliveryDetailsPage(
+                  order: order,
+                )
               : const MustBeConnectedPage(),
         );
       case '/confirmation-address':

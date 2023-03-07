@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:kokorico/core/helpers/enum.dart';
 
 import '../../../../core/helpers/locator.dart';
 import '../../../../core/helpers/shared_prefrence_helper.dart';
@@ -59,11 +60,13 @@ class AppState extends ChangeNotifier {
     rebirth();
   }
 
-  bool? _hasConnexion;
-  bool get hasConnexion => _hasConnexion!;
-  set hasConnexion(value) {
-    _hasConnexion = value;
-    notifyListeners();
+  NetworkStatus _networkStatus = NetworkStatus.NOT_DETERMINED;
+  NetworkStatus get networkStatus => _networkStatus;
+  set networkStatus(NetworkStatus value) {
+    if (value != _networkStatus) {
+      _networkStatus = value;
+      notifyListeners();
+    }
   }
 
   Future<bool> checkNetwork() async {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:kokorico/core/helpers/routes.dart';
 import 'package:kokorico/features/browsing/presentation/pages/common/widgets/shimmer_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/const.dart';
+import '../../../../../core/helpers/utility.dart';
 import '../../../../../core/theme/colors.dart';
 import '../../../data/models/product_model.dart';
 import '../../controllers/data_controller.dart';
@@ -22,7 +22,6 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   final DataController _dataController = DataController();
-  var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
   @override
   Widget build(BuildContext context) {
     var cartState = Provider.of<CartState>(context, listen: false);
@@ -156,7 +155,7 @@ class _CartPageState extends State<CartPage> {
                                 if (snapshot.hasData) {
                                   double total = cartState.getTotalPrice(
                                       snapshot.data!.fold((l) => [], (r) => r));
-                                  return Text('${f.format((total.round()))} FC',
+                                  return Text(getFormattedPrice((total)),
                                       style: GoogleFonts.poppins(
                                           textStyle: const TextStyle(
                                               color: Colors.white,

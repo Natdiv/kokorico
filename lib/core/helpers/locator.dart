@@ -21,6 +21,7 @@ import '../../features/browsing/domain/usescases/create_order.dart';
 import '../../features/browsing/domain/usescases/create_product.dart';
 import '../../features/browsing/domain/usescases/create_user_profile.dart';
 import '../../features/browsing/domain/usescases/get_cart_products.dart';
+import '../../features/browsing/domain/usescases/get_my_orders.dart';
 import '../../features/browsing/domain/usescases/makeMobilePayment.dart';
 import '../../features/browsing/domain/usescases/update_user_cart.dart';
 import '../network/network_info.dart';
@@ -44,6 +45,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => UpdateUserCart(getIt()));
   getIt.registerLazySingleton(() => CreateOrder(getIt()));
   getIt.registerLazySingleton(() => MakeMobilePayment(getIt()));
+  getIt.registerLazySingleton(() => GetMyOrders(getIt()));
 
   // Repository
   getIt.registerLazySingleton<UserRepository>(

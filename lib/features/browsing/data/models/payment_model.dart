@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/payment.dart';
 
 class PaymentModel extends Payment {
-  const PaymentModel(
-      {required super.id,
+  PaymentModel(
+      {super.id,
       required super.orderId,
       required super.userId,
       required super.paymentMethod,

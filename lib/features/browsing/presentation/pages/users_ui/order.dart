@@ -1,8 +1,8 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:kokorico/core/const.dart';
+import 'package:kokorico/core/helpers/utility.dart';
 import 'package:kokorico/features/browsing/data/models/product_model.dart';
 import 'package:provider/provider.dart';
 
@@ -156,8 +156,8 @@ class OrderPage extends StatelessWidget {
             Text('Total', style: titleStyle.copyWith(fontSize: 20)),
             Text(
               (isFromCart)
-                  ? '${NumberFormat.simpleCurrency(locale: 'fr_FR', name: '', decimalDigits: 0).format(cartState.getTotalPrice(data).round())} FC'
-                  : '${NumberFormat.simpleCurrency(locale: 'fr_FR', name: '', decimalDigits: 0).format(product!.price * quantity!)} FC',
+                  ? getFormattedPrice(cartState.getTotalPrice(data))
+                  : getFormattedPrice(product!.price * quantity!),
               style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold)),
@@ -177,17 +177,17 @@ class OrderPage extends StatelessWidget {
 
   DataRow orderDataRow(
       BuildContext context, ProductModel product, int qty, int index) {
-    var f = NumberFormat.simpleCurrency(name: '', decimalDigits: 0);
     return DataRow2(
       cells: [
         DataCell(Text(index.toString(),
             style: contentStyle.copyWith(fontWeight: FontWeight.bold))),
         DataCell(Text(product.name, style: contentStyle)),
         DataCell(Center(
-            child: Text(f.format(product.price.round()), style: contentStyle))),
+            child:
+                Text(getFormattedPrice(product.price), style: contentStyle))),
         DataCell(Center(child: Text(qty.toString(), style: contentStyle))),
         DataCell(Center(
-            child: Text(f.format(product.price.round() * qty),
+            child: Text(getFormattedPrice(product.price * qty),
                 style: contentStyle))),
       ],
     );
