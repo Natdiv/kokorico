@@ -87,7 +87,7 @@ class OrderPage extends StatelessWidget {
                 }, (data) {
                   if (data.isEmpty) {
                     return const EmptyWidget(
-                      message: 'Votre panier est vide',
+                      message: 'Vous n\'avez aucune commande',
                       imageSrc: 'assets/images/empty_cart.svg',
                     );
                   }

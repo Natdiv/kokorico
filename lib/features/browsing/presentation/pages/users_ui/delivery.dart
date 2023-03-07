@@ -63,8 +63,9 @@ class _DeliveryPageState extends State<DeliveryPage> {
               print('All Orders');
               final result = snapshot.data;
               return result!.fold((failure) {
-                return EmptyWidget(
-                  message: failure.props.first.toString(),
+                print(failure.props.first.toString());
+                return const EmptyWidget(
+                  message: 'Une erreur inconnue est survenue',
                   imageSrc: 'assets/images/cancel.svg',
                 );
               }, (data) {
